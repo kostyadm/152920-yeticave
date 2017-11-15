@@ -91,6 +91,7 @@ function sort_ads(){
             if ($is_auth==true):?>
                 <div class="user-menu__image">
                     <img src="<?php print($user_avatar); ?>" width="40" height="40" alt="Пользователь">
+
                 </div>
                 <div class="user-menu__logged">
                     <p><?php print($user_name);?></p>
