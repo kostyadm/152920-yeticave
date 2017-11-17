@@ -1,7 +1,9 @@
 <?php
-function include_template('path_to_tamplate', ['key'=>$value]){
-    if(isset(path_to_template)){
-
+function include_template($path_to_file, $args=array()){
+    if(file_exists(path_to_file)){
+        ob_start();
+        print ($path_to_file);
+        $result=ob_get_clean();
     }else{
         $result='';
     }
