@@ -1,29 +1,8 @@
-<?php
-$is_auth = (bool) rand(0, 1);
-
-$user_name = 'Константин';
-$user_avatar = 'img/user.jpg';
-
-// устанавливаем часовой пояс в Московское время
-date_default_timezone_set('Europe/Moscow');
-
-// записать в эту переменную оставшееся время в этом формате (ЧЧ:ММ)
-$lot_time_remaining = "00:00";
-
-// временная метка для полночи следующего дня
-$tomorrow = strtotime('today midnight');
-
-// временная метка для настоящего времени
-$now = strtotime('now');
-
-// далее нужно вычислить оставшееся время до начала следующих суток и записать его в переменную $lot_time_remaining
-$lot_time_remaining = gmdate("H:i", $tomorrow - $now);
-?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title><?=$pagetitle?></title>
+    <title><?=$args['page_title'];?></title>
     <link href="css/normalize.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
@@ -32,7 +11,7 @@ $lot_time_remaining = gmdate("H:i", $tomorrow - $now);
 <header class="main-header">
     <div class="main-header__container container">
         <h1 class="visually-hidden">YetiCave</h1>
-        <a class="main-header__logo">
+        <a class="main-header__logo" href="index.php">
             <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
         </a>
         <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru">
@@ -45,12 +24,12 @@ $lot_time_remaining = gmdate("H:i", $tomorrow - $now);
 
         <!-- здесь должен быть PHP код для показа аватара пользователя -->
             <?php
-            if ($is_auth==true):?>
+            if ($args['auth']==true):?>
                 <div class="user-menu__image">
-                    <img src=<?php print($user_avatar); ?> width="40" height="40" alt="Пользователь">
+                    <img src=<?php print($args['avatar']); ?> width="40" height="40" alt="Пользователь">
                 </div>
                 <div class="user-menu__logged">
-                    <p><?php print($user_name);?></p>
+                    <p><?php print($args['name']);?></p>
                 </div>
 
             <?php else: ?>
@@ -70,7 +49,7 @@ $lot_time_remaining = gmdate("H:i", $tomorrow - $now);
 </header>
 
 <main class="container">
-    <?=$content?>
+    <?=$args['content'];?>
 </main>
 
 <footer class="main-footer">
