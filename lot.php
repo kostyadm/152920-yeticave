@@ -1,12 +1,14 @@
 <?php
 
-// ставки пользователей, которыми надо заполнить таблицу
-$bets = [
-    ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) .' minute')],
-    ['name' => 'Константин', 'price' => 11000, 'ts' => strtotime('-' . rand(1, 18) .' hour')],
-    ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) .' hour')],
-    ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
-];
+require_once ('functions.php');
+require_once ('users_lots.php');
+
+if (isset ($_GET['id'])){
+$id=$_GET['id'];
+if($id>count($_GET['id']) OR $id<0) {
+    header("Location: /template/404.php");
+}
+}
 
 
 function time_format($timestamp){
@@ -28,7 +30,7 @@ function time_format($timestamp){
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>DC Ply Mens 2016/2017 Snowboard</title>
+    <title><?=$lot_data[$_GET['id']]['name']?></title>
     <link href="css/normalize.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
@@ -37,7 +39,7 @@ function time_format($timestamp){
 <header class="main-header">
     <div class="main-header__container container">
         <h1 class="visually-hidden">YetiCave</h1>
-        <a class="main-header__logo" href="index.html">
+        <a class="main-header__logo" href="index.php">
             <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
         </a>
         <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru">
@@ -81,63 +83,11 @@ function time_format($timestamp){
             </li>
         </ul>
     </nav>
-    <section class="lot-item container">
-        <h2>DC Ply Mens 2016/2017 Snowboard</h2>
-        <div class="lot-item__content">
-            <div class="lot-item__left">
-                <div class="lot-item__image">
-                    <img src="img/lot-image.jpg" width="730" height="548" alt="Сноуборд">
-                </div>
-                <p class="lot-item__category">Категория: <span>Доски и лыжи</span></p>
-                <p class="lot-item__description">Легкий маневренный сноуборд, готовый дать жару в любом парке, растопив
-                    снег
-                    мощным щелчкоми четкими дугами. Стекловолокно Bi-Ax, уложенное в двух направлениях, наделяет этот
-                    снаряд
-                    отличной гибкостью и отзывчивостью, а симметричная геометрия в сочетании с классическим прогибом
-                    кэмбер
-                    позволит уверенно держать высокие скорости. А если к концу катального дня сил совсем не останется,
-                    просто
-                    посмотрите на Вашу доску и улыбнитесь, крутая графика от Шона Кливера еще никого не оставляла
-                    равнодушным.</p>
-            </div>
-            <div class="lot-item__right">
-                <div class="lot-item__state">
-                    <div class="lot-item__timer timer">
-                        10:54:12
-                    </div>
-                    <div class="lot-item__cost-state">
-                        <div class="lot-item__rate">
-                            <span class="lot-item__amount">Текущая цена</span>
-                            <span class="lot-item__cost">11 500</span>
-                        </div>
-                        <div class="lot-item__min-cost">
-                            Мин. ставка <span>12 000 р</span>
-                        </div>
-                    </div>
-                    <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
-                        <p class="lot-item__form-item">
-                            <label for="cost">Ваша ставка</label>
-                            <input id="cost" type="number" name="cost" placeholder="12 000">
-                        </p>
-                        <button type="submit" class="button">Сделать ставку</button>
-                    </form>
-                </div>
-                <div class="history">
-                    <h3>История ставок (<span>4</span>)</h3>
-                    <!-- заполните эту таблицу данными из массива $bets-->
-                    <table class="history__list">
-                        <?php foreach ($bets as $key=>$val):?>
-                            <tr class="history__item">
-                                <td class="history__name"><?=$bets[$key]['name'];?></td>
-                                <td class="history__price"><?=$bets[$key]['price'];?> р</td>
-                                <td class="history__time"><?=time_format($bets[$key]['ts']);?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
+
+    <?php
+    print_lot($lot_data, $bets);
+    ?>
+
 </main>
 
 <footer class="main-footer">
