@@ -10,6 +10,14 @@ function include_template($filename, $args=array()){
     return $result;
 }
 
+function user_status($is_auth, $user_name='', $user_avatar=''){
+    if ($is_auth){
+        $auth_status=include_template('auth_user.php', ['name'=>$user_name, 'avatar'=>$user_avatar]);
+    }else{
+        $auth_status=include_template('non_auth_user.php', []);
+    }
+    return $auth_status;
+}
 // устанавливаем часовой пояс в Московское время
 date_default_timezone_set('Europe/Moscow');
 

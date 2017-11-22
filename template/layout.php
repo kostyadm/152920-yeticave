@@ -21,29 +21,8 @@
         <a class="main-header__add-lot button" href="add-lot.html">Добавить лот</a>
 
         <nav class="user-menu">
-
         <!-- здесь должен быть PHP код для показа аватара пользователя -->
-            <?php
-            if ($args['auth']==true):?>
-                <div class="user-menu__image">
-                    <img src=<?php print($args['avatar']); ?> width="40" height="40" alt="Пользователь">
-                </div>
-                <div class="user-menu__logged">
-                    <p><?php print($args['name']);?></p>
-                </div>
-
-            <?php else: ?>
-                <ul class="user-menu__list">
-                    <li class="user-menu__item">
-                        <a href="#">Регистрация</a>
-                    </li>
-                    <li class="user-menu__item">
-                        <a href="#">Вход</a>
-                    </li>
-                </ul>
-
-            <?php endif; ?>
-
+            <?=$args['auth_user'];?>
         </nav>
     </div>
 </header>
