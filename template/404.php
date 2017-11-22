@@ -1,10 +1,13 @@
+<?php
+http_response_code(404);
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title><?=$args['page_title'];?></title>
-    <link href="css/normalize.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <title><404</title>
+<link href="css/normalize.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
 </head>
 <body>
 
@@ -21,18 +24,39 @@
         <a class="main-header__add-lot button" href="add-lot.html">Добавить лот</a>
 
         <nav class="user-menu">
-        <!-- здесь должен быть PHP код для показа аватара пользователя -->
-            <?=$args['auth_user'];?>
+
+
         </nav>
     </div>
 </header>
 
 <main class="container">
-    <?=$args['content'];?>
+    <h2>404 - Страница не найдена</h2>
 </main>
 
 <footer class="main-footer">
-    <?=$args['nav']?>
+    <nav class="nav">
+        <ul class="nav__list container">
+            <li class="nav__item">
+                <a href="all-lots.html">Доски и лыжи</a>
+            </li>
+            <li class="nav__item">
+                <a href="all-lots.html">Крепления</a>
+            </li>
+            <li class="nav__item">
+                <a href="all-lots.html">Ботинки</a>
+            </li>
+            <li class="nav__item">
+                <a href="all-lots.html">Одежда</a>
+            </li>
+            <li class="nav__item">
+                <a href="all-lots.html">Инструменты</a>
+            </li>
+            <li class="nav__item">
+                <a href="all-lots.html">Разное</a>
+            </li>
+        </ul>
+    </nav>
     <div class="main-footer__bottom container">
         <div class="main-footer__copyright">
             <p>© 2017, YetiCave</p>
