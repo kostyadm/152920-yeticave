@@ -1,14 +1,14 @@
 <section class="lot-item container">
-    <h2><?=$args['details'][$args['id']]['name']?></h2>
+    <h2><?=$args['details']['name']?></h2>
     <div class="lot-item__content">
         <div class="lot-item__left">
             <div class="lot-item__image">
-                <img src="<?=$args['details'][$args['id']]['pic-link']?>" width="730" height="548" alt="Сноуборд">
+                <img src="<?=$args['details']['pic-link']?>" width="730" height="548" alt="Сноуборд">
             </div>
-            <p class="lot-item__category">Категория: <span><?=$args['details'][$args['id']]['category']?></span></p>
+            <p class="lot-item__category">Категория: <span><?=$args['details']['category']?></span></p>
             <p class="lot-item__description">Легкий маневренный сноуборд, готовый дать жару в любом парке, растопив
                 снег
-                мощным щелчкоми четкими дугами. Стекловолокно Bi-Ax, уложенное в двух направлениях, наделяет этот
+                мощным щелчком и четкими дугами. Стекловолокно Bi-Ax, уложенное в двух направлениях, наделяет этот
                 снаряд
                 отличной гибкостью и отзывчивостью, а симметричная геометрия в сочетании с классическим прогибом
                 кэмбер
@@ -25,7 +25,7 @@
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
                         <span class="lot-item__amount">Текущая цена</span>
-                        <span class="lot-item__cost"><?=$args['details'][$args['id']]['price']?></span>
+                        <span class="lot-item__cost"><?=$args['details']['price']?></span>
                     </div>
                     <div class="lot-item__min-cost">
                         Мин. ставка <span>12 000 р</span>
@@ -43,13 +43,7 @@
                 <h3>История ставок (<span>4</span>)</h3>
                 <!-- заполните эту таблицу данными из массива $bets-->
                 <table class="history__list">
-                    <?php foreach ($args['bets'] as $key=>$val):?>
-                        <tr class="history__item">
-                            <td class="history__name"><?=$val['name'];?></td>
-                            <td class="history__price"><?=$val['price'];?> р</td>
-                            <td class="history__time"><?=time_format($val['ts']);?></td>
-                        </tr>
-                    <?php endforeach; ?>
+                    <?=$args['bets']?>
                 </table>
             </div>
         </div>

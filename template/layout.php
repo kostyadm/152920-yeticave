@@ -53,28 +53,7 @@
 </main>
 
 <footer class="main-footer">
-    <nav class="nav">
-        <ul class="nav__list container">
-            <li class="nav__item">
-                <a href="all-lots.html">Доски и лыжи</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Крепления</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Ботинки</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Одежда</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Инструменты</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Разное</a>
-            </li>
-        </ul>
-    </nav>
+    <?=$args['nav']?>
     <div class="main-footer__bottom container">
         <div class="main-footer__copyright">
             <p>© 2017, YetiCave</p>
