@@ -1,7 +1,7 @@
-<?= $args['nav'] ?>
+<?= $args['nav-menu'] ?>
 
-<form class="form form--add-lot container <?= isset($args['errors']['Наименование']) ? "form--invalid" : "";
-$value = isset($args['jpg']['title']) ? $args['jpg']['title'] : ""; ?>" action="../add.php" method="post"
+<form class="form form--add-lot container <?= isset($args['errors']['Наименование']) ? "form--invalid" : "";?>"
+      action="../add.php" method="post"
       enctype="multipart/form-data" novalidate><!-- form--invalid -->
     <h2>Добавление лота</h2>
     <div class="form__container-two">
@@ -15,25 +15,22 @@ $value = isset($args['jpg']['title']) ? $args['jpg']['title'] : ""; ?>" action="
         </div>
         <div class="form__item <?= isset($args['errors']['Категория']) ? "form__item--invalid" : ""; ?>">
             <label for="category">Категория</label>
-            <select id="category" name="category" value="<?= isset($args['post_data']['category']) ? $args['post_data']['category'] : ""; ?>" required>
+            <select id="category" name="category" required>
                 <option>Выберите категорию</option>
-                <option>Доски и лыжи</option>
-                <option>Крепления</option>
-                <option>Ботинки</option>
-                <option>Одежда</option>
-                <option>Инструменты</option>
-                <option>Разное</option>
+                <?php foreach ($args['cat'] as $value):?>
+                <option value="<?=$value?>" <?php if( isset($args['post_data']['category']) && $value == $args['post_data']['category'] ): ?>selected="selected" <?php endif; ?>><?=$value?></option>
+                <?php endforeach; ?>
             </select>
             <span class="form__error">Выберите категорию</span>
         </div>
     </div>
     <div class="form__item form__item--wide <?= isset($args['errors']['Описание']) ? "form__item--invalid" : ""; ?>">
         <label for="message">Описание</label>
-        <textarea id="message" name="message" value="<?= isset($args['post_data']['message']) ? $args['post_data']['message'] : ""; ?>"
-                  placeholder="Напишите описание лота" required></textarea>
+        <textarea id="message" name="message"
+        placeholder="Напишите описание лота" required><?= isset($args['post_data']['message']) ? $args['post_data']['message'] : ""; ?></textarea>
         <span class="form__error">Напишите описание лота</span>
     </div>
-    <div class="form__item form__item--file" <?= isset($args['errors']['Файл']) ? "" : "form__item--uploaded"; ?>> <!-- form__item--uploaded -->
+    <div class="form__item form__item--file <?= isset($args['jpg']['path']) ? "form__item--uploaded" : ""; ?>"> <!-- form__item--uploaded -->
         <label>Изображение</label>
         <div class="preview">
             <button class="preview__remove" type="button">x</button>
@@ -52,13 +49,13 @@ $value = isset($args['jpg']['title']) ? $args['jpg']['title'] : ""; ?>" action="
     <div class="form__container-three">
         <div class="form__item form__item--small <?= isset($args['errors']['Начальная цена']) ? "form__item--invalid" : ""; ?>">
             <label for="lot-rate">Начальная цена</label>
-            <input id="lot-rate" type="number" name="lot-rate" value="<?= isset($args['post_data']['lot-rate']) ? $args['post_data']['lot-rate'] : ""; ?>"
+            <input id="lot-rate" type="text" name="lot-rate" value="<?= isset($args['post_data']['lot-rate']) ? $args['post_data']['lot-rate'] : ""; ?>"
                    placeholder="0" required>
             <span class="form__error">Введите начальную цену</span>
         </div>
         <div class="form__item form__item--small <?= isset($args['errors']['Шаг ставки']) ? "form__item--invalid" : ""; ?>">
             <label for="lot-step">Шаг ставки</label>
-            <input id="lot-step" type="number" name="lot-step" value="<?= isset($args['post_data']['lot-step']) ? $args['post_data']['lot-step'] : ""; ?>"
+            <input id="lot-step" type="text" name="lot-step" value="<?= isset($args['post_data']['lot-step']) ? $args['post_data']['lot-step'] : ""; ?>"
                    placeholder="0" required>
             <span class="form__error">Введите шаг ставки</span>
         </div>

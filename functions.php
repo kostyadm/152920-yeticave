@@ -107,49 +107,41 @@ function validate_number($value)
 
 function validate_picture($jpg)
 {
-    if (isset($_FILES['lot-photo'][name])) {
-        $tmp_name = $_FILES['lot-photo']['tmp_name'];
-        $path = $_FILES['lot-photo']['name'];
+    if (isset($_FILES['lot_photo']['name'])) {
+        $tmp_name = $_FILES['lot_photo']['tmp_name'];
+        $path = $_FILES['lot_photo']['name'];
+        $res = move_uploaded_file($tmp_name, 'img/uploads/' . $path);
 
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_type = finfo_file($finfo, $tmp_name);
-        if ($file_type !== "image/jpg") {
-            $errors['Файл'] = 'Загрузите картинку в формате JPG';
-        } else {
-            move_uploaded_file($tmp_name, 'uploads/' . $path);
-            $jpg['path'] = $path;
+        if ($res) {
+            $jpg['path'] = 'img/uploads/'.$path.'.jpg';
         }
+
     } else {
         $errors['Файл'] = 'Вы не загрузили файл';
     }
 }
 
-function validate_lot_input($required, $rules, $dict, $jpg)
+function validate_lot_input($required, $is_number, $dict, $jpg, $errors,$cat, $nav_menu, $lot_data, $bets)
 {
     foreach ($_POST as $key => $value) {
-        if (in_array($key, $required) && $value == '') {
+        if (in_array($key, $required) && ($value == '' OR $value == 'Выберите категорию')) {
             $errors[$dict[$key]] = '- это поле необходимо заполнить';
         }
-        if (in_array($key, $rules)) {
-            $result = call_user_func('validate_number', $value);
-            if (!$result) {
+        if (in_array($key, $is_number)) {
+            if (!is_numeric($_POST[$key])) {
                 $errors[$dict[$key]] = '- в это поле необходимо вписать числовое значение';
             }
         }
     }
 
     validate_picture($jpg);
-
-    if (count($errors)>0) {
-        $page_content = include_template('add-lot.php', ['post_data' => $_POST, 'jpg' => $jpg, 'errors' => $errors]);
+        $result='';
+    if (count($errors) > 0) {
+        $result .= include_template('add-lot.php', ['post_data' => $_POST, 'jpg' => $jpg, 'errors' => $errors, 'cat'=>$cat, 'nav-menu'=>$nav_menu]);
     } else {
-        $page_content = include_template('lot.php', ['post_data' => $_POST, 'gif' => $jpg]);
+        $result .= print_lot($lot_data, $bets);
     }
-
-    $layout_content = include_template('layout.php', ['page_title' => 'Добавление лота', 'auth_user' => $user, 'content' => $page_content, 'auth' => $is_auth, 'name' => $user_name, 'avatar' => $user_avatar, 'nav' => $nav_menu]);
-    $layout_content = preg_replace('<main class="container">', 'main', $layout_content);
-    print($layout_content);
-
+    return $result;
 }
 
 
