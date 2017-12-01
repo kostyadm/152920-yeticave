@@ -54,7 +54,7 @@ function validate_picture($tmp_name, $path)
         $jpg['error'] = 'Загрузите картинку в формате jpg';
     } else {
         move_uploaded_file($tmp_name, 'img/uploads/' . $path);
-        $jpg['path']=$path;
+        $jpg['path'] = $path;
     }
     return $jpg;
 }
