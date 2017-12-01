@@ -22,7 +22,7 @@ if ($id >= count($lot_data)) {
     foreach ($bets as $bet => $row):
         $bets_return .= include_template('bets.php', ['bet' => $row]);
     endforeach;
-    $page_content = include_template('lot.php', ['details' => $lot_data[$id], 'bets' => $bets_return]);
+    $page_content = include_template('lot.php', ['details' => $lot_data[$id], 'bets' => $bets_return, 'list_menu' => $list_menu]);
 }
 $layout_content = include_template('layout.php', ['page_title' => 'Главная страница', 'auth_status' => $auth_status, 'content' => $page_content, 'list_menu' => $list_menu]);
 $layout_content = preg_replace('<main class="container">', 'main', $layout_content);

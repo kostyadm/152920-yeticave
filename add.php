@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         foreach ($bets as $bet => $row):
             $bets_return .= include_template('bets.php', ['bet' => $row]);
         endforeach;
-        $page_content = include_template('lot.php', ['post_data' => $post_data, 'jpg' => $jpg, 'bets' => $bets_return]);
+        $page_content = include_template('lot.php', ['post_data' => $post_data, 'jpg' => $jpg, 'bets' => $bets_return, 'list_menu' => $list_menu]);
     } else {
         $page_content = include_template('add-lot.php', ['post_data' => $post_data, 'jpg' => $jpg, 'errors' => $errors, 'cat' => $cat, 'list_menu' => $list_menu, 'picture_errors' => $picture_errors]);
     }
