@@ -1,23 +1,29 @@
 <?php
 
-require_once ('functions.php');
-require_once ('users_lots.php');
-require_once ('data.php');
+require_once('functions.php');
+require_once('users_lots.php');
+require_once('data.php');
 
-$id=$_GET['id'] ??  null;
-if($id>=count($lot_data)) {
-    http_response_code(404);
-}else{
+if ($is_auth) {
+    $auth_status = include_template('auth_user.php', ['name' => $user_name, 'avatar' => $user_avatar]);
+} else {
+    $auth_status = include_template('non_auth_user.php', []);
+}
 
-$user=user_status($is_auth, $user_name, $user_avatar);
+$list_menu = '';
+foreach ($cat as $key => $value):
+    $list_menu .= include_template('nav_list_category.php', ['category' => $value]);
+endforeach;
 
-$list_menu = nav_list_menu($cat);
-$nav_menu = include_template('nav_list.php',['list'=>$list_menu]);
-$page_content=$nav_menu;
-
-$lot=print_lot($lot_data, $bets);
-$page_content.=$lot;
-
-$layout_content=include_template('layout.php', ['page_title'=>'Лот','auth_user' =>$user, 'nav'=>$nav_menu,'content'=>$page_content, 'auth'=>$is_auth,'name'=>$user_name, 'avatar'=>$user_avatar]);
-$layout_content=preg_replace('<main class="container">' , 'main',$layout_content);}
+$id = isset($_GET['id']) ? $_GET['id'] : "";
+if ($id >= count($lot_data)) {
+    $page_content = include_template('404.php', []);
+} else {
+    foreach ($bets as $bet => $row):
+        $bets_return .= include_template('bets.php', ['bet' => $row]);
+    endforeach;
+    $page_content = include_template('lot.php', ['details' => $lot_data[$id], 'bets' => $bets_return]);
+}
+$layout_content = include_template('layout.php', ['page_title' => 'Главная страница', 'auth_status' => $auth_status, 'content' => $page_content, 'list_menu' => $list_menu]);
+$layout_content = preg_replace('<main class="container">', 'main', $layout_content);
 print($layout_content);
