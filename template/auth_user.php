@@ -3,4 +3,5 @@
 </div>
 <div class="user-menu__logged">
     <p><?=$name;?></p>
+    <a href="logout.php">Выйти</a>
 </div>

@@ -4,16 +4,18 @@ require_once('functions.php');
 require_once('data.php');
 require_once('users_lots.php');
 
-if ($is_auth) {
-    $auth_status = include_template('auth_user.php', ['name' => $user_name, 'avatar' => $user_avatar]);
-} else {
-    $auth_status = include_template('non_auth_user.php', []);
-}
-
 $list_menu = '';
 foreach ($cat as $key => $value):
     $list_menu .= include_template('nav_list_category.php', ['category' => $value]);
 endforeach;
+
+session_start();
+if (isset($_SESSION['user'])){
+    $user=$_SESSION['user'];
+    $auth_status = include_template('auth_user.php', ['name' => $user['name'], 'avatar' => $user_avatar]);
+
+
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $added_data = $_POST;
@@ -37,6 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 } else {
     $page_content = include_template('add-lot.php', ['cat' => $cat, 'list_menu' => $list_menu]);
+}
+
+} else {
+    $page_content = include_template('403.php', ['list_menu' => $list_menu]);
+    $auth_status = include_template('non_auth_user.php', []);
+
 }
 $layout_content = include_template('layout.php', ['page_title' => 'Главная страница', 'auth_status' => $auth_status, 'content' => $page_content, 'list_menu' => $list_menu]);
 $layout_content = preg_replace('<main class="container">', 'main', $layout_content);

@@ -1,5 +1,5 @@
 <?php
-http_response_code(404);
+http_response_code(403);
 ?>
 
 <nav class="nav">
@@ -8,5 +8,4 @@ http_response_code(404);
     </ul>
 </nav>
 
-    <h2>404 - Страница не найдена</h2>
-
+    <h2>403 - В доступе отказано</h2>
