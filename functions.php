@@ -41,9 +41,9 @@ function time_format($timestamp)
     }
 }
 
-function validate_number($value)
+function validate_email($email)
 {
-    return filter_var($value, FILTER_VALIDATE_INT);
+    return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
 function validate_picture($tmp_name, $path)
@@ -59,20 +59,38 @@ function validate_picture($tmp_name, $path)
     return $jpg;
 }
 
-function validate_lot_input($post_data, $required, $dict, $is_number)
+function validate_lot_input($added_data, $required, $dict, $is_number)
 {
-    foreach ($post_data as $key => $value) {
+    foreach ($added_data as $key => $value) {
         if (in_array($key, $required) && ($value == '' OR $value == 'Выберите категорию')) {
             $errors[$dict[$key]] = '- это поле необходимо заполнить';
         }
         if (in_array($key, $is_number)) {
-            if (!is_numeric($post_data[$key])) {
+            if (!is_numeric($added_data[$key])) {
                 $errors[$dict[$key]] = '- в это поле необходимо вписать числовое значение';
             }
         }
     }
     return $errors;
 }
+
+function validate_login_data($login_data)
+{
+    foreach ($login_data as $key => $value) {
+        if ($value == '') {
+            $errors[$key] = 'Это поле необходимо заполнить';
+        } elseif ($key == 'email') {
+            if (!validate_email($value)) {
+                $errors[$key] = 'Введённый адрес не действителен';
+            }
+        }
+    }
+    return $errors;
+}
+
+
+
+
 
 
 

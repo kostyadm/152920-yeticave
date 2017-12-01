@@ -16,8 +16,8 @@ foreach ($cat as $key => $value):
 endforeach;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $post_data = $_POST;
-    $errors = validate_lot_input($post_data, $required, $dict, $is_number);
+    $added_data = $_POST;
+    $errors = validate_lot_input($added_data, $required, $dict, $is_number);
 
     if (isset($_FILES['lot_photo']['name'])) {
         $tmp_name = $_FILES['lot_photo']['tmp_name'];
@@ -31,9 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         foreach ($bets as $bet => $row):
             $bets_return .= include_template('bets.php', ['bet' => $row]);
         endforeach;
-        $page_content = include_template('lot.php', ['post_data' => $post_data, 'jpg' => $jpg, 'bets' => $bets_return]);
+        $page_content = include_template('lot.php', ['added_data' => $added_data, 'jpg' => $jpg, 'bets' => $bets_return]);
     } else {
-        $page_content = include_template('add-lot.php', ['post_data' => $post_data, 'jpg' => $jpg, 'errors' => $errors, 'cat' => $cat, 'list_menu' => $list_menu, 'picture_errors' => $picture_errors]);
+        $page_content = include_template('add-lot.php', ['added_data' => $added_data, 'jpg' => $jpg, 'errors' => $errors, 'cat' => $cat, 'list_menu' => $list_menu, 'picture_errors' => $picture_errors]);
     }
 } else {
     $page_content = include_template('add-lot.php', ['cat' => $cat, 'list_menu' => $list_menu]);
