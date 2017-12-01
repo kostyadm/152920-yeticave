@@ -26,9 +26,10 @@
                 равнодушным.'; ?></p>
         </div>
         <div class="lot-item__right">
+            <?php if (isset($_SESSION['user'])): ?>
             <div class="lot-item__state">
                 <div class="lot-item__timer timer">
-                    10:54:12
+                    <?=$time?>
                 </div>
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
@@ -48,6 +49,7 @@
                     </p>
                     <button type="submit" class="button">Сделать ставку</button>
                 </form>
+                <?php endif; ?>
             </div>
             <div class="history">
                 <h3>История ставок (<span>4</span>)</h3>
