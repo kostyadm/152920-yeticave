@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title><?=$args['page_title'];?></title>
+    <title><?=$page_title;?></title>
     <link href="css/normalize.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
@@ -18,21 +18,25 @@
             <input type="search" name="search" placeholder="Поиск лота">
             <input class="main-header__search-btn" type="submit" name="find" value="Найти">
         </form>
-        <a class="main-header__add-lot button" href="add-lot.html">Добавить лот</a>
+        <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
 
         <nav class="user-menu">
         <!-- здесь должен быть PHP код для показа аватара пользователя -->
-            <?=$args['auth_user'];?>
+            <?=$auth_status;?>
         </nav>
     </div>
 </header>
 
 <main class="container">
-    <?=$args['content'];?>
+    <?=$content;?>
 </main>
 
 <footer class="main-footer">
-    <?=$args['nav']?>
+    <nav class="nav">
+        <ul class="nav__list container">
+            <?=$list_menu;?>
+        </ul>
+    </nav>
     <div class="main-footer__bottom container">
         <div class="main-footer__copyright">
             <p>© 2017, YetiCave</p>
