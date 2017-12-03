@@ -3,6 +3,6 @@
         <a href="#">Регистрация</a>
     </li>
     <li class="user-menu__item">
-        <a href="#">Вход</a>
+        <a href="login.php">Вход</a>
     </li>
 </ul>

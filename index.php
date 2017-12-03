@@ -4,9 +4,11 @@ require_once('functions.php');
 require_once('data.php');
 require_once('users_lots.php');
 
+session_start();
 
-if ($is_auth) {
-    $auth_status = include_template('auth_user.php', ['name' => $user_name, 'avatar' => $user_avatar]);
+if (isset($_SESSION['user'])){
+    $user=$_SESSION['user'];
+    $auth_status = include_template('auth_user.php', ['name' => $user['name'], 'avatar' => $user_avatar]);
 } else {
     $auth_status = include_template('non_auth_user.php', []);
 }

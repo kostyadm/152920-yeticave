@@ -9,5 +9,5 @@ $cat = ["boards" => "Доски и лыжи", "attachment" => "Креплени�
 /*lot input data validation*/
 
 $required = ['lot-name', 'category', 'message', 'lot-rate', 'lot-step', 'lot-date'];
-$dict = ['lot-name' => 'Наименование', 'category' => 'Категория', 'message' => 'Описание', 'lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки', 'lot-date' => 'Дата окончания торгов'];
+$dict = ['lot-name' => 'Наименование', 'category' => 'Категория', 'message' => 'Описание', 'lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки', 'lot-date' => 'Дата окончания торгов', 'email'=>'email', 'password'=>'Пароль'];
 $is_number = ['lot-rate', 'lot-step'];
