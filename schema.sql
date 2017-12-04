@@ -63,4 +63,10 @@ CREATE INDEX lot_name
 CREATE UNIQUE INDEX email
   ON users (email);
 CREATE INDEX user_name
+<<<<<<< HEAD
   ON users (name);
+=======
+  ON users (name);
+
+
+>>>>>>> b842787b2888fb4e4aee4d0cde48310a39f03aea
