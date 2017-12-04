@@ -2,18 +2,16 @@ CREATE DATABASE yeticave;
 
 USE yeticave;
 
-CREATE TABLE bet (
-  id        INT       NOT NULL,
-  user_id   INT       NOT NULL,
-  lot_id    INT       NOT NULL,
-
-  reg_date  TIMESTAMP NULL,
-  bet_value INT       NULL,
-  CONSTRAINT bet_pk PRIMARY KEY (id),
-  CONSTRAINT bet_user FOREIGN KEY bet_user (user_id) REFERENCES users(id),
-  CONSTRAINT bet_lot FOREIGN KEY bet_lot (lot_id) REFERENCES lot (id)
+CREATE TABLE users (
+  id                INT       NOT NULL,
+  ragistration_date TIMESTAMP NULL,
+  email             CHAR(45)  NOT NULL,
+  name              CHAR(60)  NOT NULL,
+  password          CHAR(60)  NOT NULL,
+  avatar            CHAR(45)  NOT NULL,
+  contacts          CHAR(45)  NOT NULL,
+  CONSTRAINT user_pk PRIMARY KEY (id)
 );
-
 
 CREATE TABLE category (
   id         INT      NOT NULL,
@@ -21,7 +19,6 @@ CREATE TABLE category (
   is_deleted TINYINT  NOT NULL,
   CONSTRAINT category_pk PRIMARY KEY (id)
 );
-
 
 CREATE TABLE lot (
   id             INT         NOT NULL,
@@ -41,16 +38,18 @@ CREATE TABLE lot (
 );
 
 
-CREATE TABLE users (
-  id                INT       NOT NULL,
-  ragistration_date TIMESTAMP NULL,
-  email             CHAR(45)  NOT NULL,
-  name              CHAR(60)  NOT NULL,
-  password          CHAR(60)  NOT NULL,
-  avatar            CHAR(45)  NOT NULL,
-  contacts          CHAR(45)  NOT NULL,
-  CONSTRAINT user_pk PRIMARY KEY (id)
+CREATE TABLE bet (
+  id        INT       NOT NULL,
+  user_id   INT       NOT NULL,
+  lot_id    INT       NOT NULL,
+
+  reg_date  TIMESTAMP NULL,
+  bet_value INT       NULL,
+  CONSTRAINT bet_pk PRIMARY KEY (id),
+  CONSTRAINT bet_user FOREIGN KEY bet_user (user_id) REFERENCES users(id),
+  CONSTRAINT bet_lot FOREIGN KEY bet_lot (lot_id) REFERENCES lot (id)
 );
+
 
 CREATE INDEX bet
   ON bet (bet_value);
