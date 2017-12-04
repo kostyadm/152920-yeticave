@@ -5,8 +5,8 @@ require_once('users_lots.php');
 require_once('data.php');
 
 session_start();
-if (isset($_SESSION['user'])){
-    $user=$_SESSION['user'];
+if (isset($_SESSION['user'])) {
+    $user = $_SESSION['user'];
     $auth_status = include_template('auth_user.php', ['name' => $user['name'], 'avatar' => $user_avatar]);
 } else {
     $auth_status = include_template('non_auth_user.php', []);
@@ -24,7 +24,29 @@ if ($id >= count($lot_data)) {
     foreach ($bets as $bet => $row):
         $bets_return .= include_template('bets.php', ['bet' => $row]);
     endforeach;
-    $page_content = include_template('lot.php', ['details' => $lot_data[$id], 'bets' => $bets_return, 'time' => $lot_time_remaining]);
+
+    if (isset ($_COOKIE['cart'])) {
+        $in_cart = json_decode($_COOKIE['cart'], TRUE);
+    } else {
+        $in_cart = [];
+    }
+    if (isset($_SESSION['user'])) {
+        if (count($in_cart) > 0) {
+            foreach ($in_cart as $value) {
+                if ($id == $value) {
+                    $do_offer = '';
+                    break;
+                } else {
+                    $do_offer = include_template('offer.php', ['in_cart' => $in_cart, 'details' => $lot_data[$id], 'time' => $lot_time_remaining, 'id' => $id]);
+                }
+            }
+        } else {
+            $do_offer = include_template('offer.php', ['in_cart' => $in_cart, 'details' => $lot_data[$id], 'time' => $lot_time_remaining, 'id' => $id]);
+        }
+    } else {
+        $do_offer = '';
+    }
+    $page_content = include_template('lot.php', ['details' => $lot_data[$id], 'bets' => $bets_return, 'list_menu' => $list_menu, 'do_offer' => $do_offer]);
 }
 $layout_content = include_template('layout.php', ['page_title' => 'Главная страница', 'auth_status' => $auth_status, 'content' => $page_content, 'list_menu' => $list_menu]);
 $layout_content = preg_replace('<main class="container">', 'main', $layout_content);

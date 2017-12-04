@@ -35,7 +35,7 @@ function time_format($timestamp)
     if ($time_formated > 1440) {
         return $time_string = gmdate("d.m.y в h.i", $timestamp);
     } elseif ($time_formated < 60) {
-        return $time_string = $time_formated . ' минут назад';
+        return $time_string = round($time_formated) . ' минут назад';
     } else {
         return $time_string = (round($time_formated) / 60) . ' часов назад';
     }
