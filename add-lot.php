@@ -22,8 +22,11 @@ if (isset($_SESSION['user'])){
         $added_data = $_POST;
         $errors = validate_lot_input($added_data, $required, $dict, $is_number);
 
-        $jpg = validate_picture();
-
+        $jpg=[];
+        if (isset($_FILES["lot_photo"]['name'])) {
+            $photo_upload=$_FILES["lot_photo"]['name'];
+            $jpg = validate_picture($photo_upload);
+        }
         $page_content = include_template('add-lot.php', ['added_data' => $added_data, 'jpg' => $jpg, 'errors' => $errors, 'cat' => $cat, 'list_menu' => $list_menu, 'picture_errors' => $picture_errors]);
         if (count($errors) == 0) {
             foreach ($bets as $bet) {
