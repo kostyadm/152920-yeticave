@@ -4,13 +4,13 @@
     </ul>
 </nav>
 <section class="lot-item container">
-    <h2><?= isset($added_data['lot-name']) ? $added_data['lot-name'] : $details['name']; ?></h2>
+    <h2><?= isset($added_data['lot_name']) ? $added_data['lot_name'] : $details['lot_name']; ?></h2>
     <div class="lot-item__content">
         <div class="lot-item__left">
             <div class="lot-item__image">
                 <img src="<?= isset($jpg['path']) ? "img/uploads/" . $jpg['path'] : $details['pic-link'] ?>" width="730"
                      height="548"
-                     alt="<?= isset($added_data['category']) ? $added_data['category'] : $details['category']; ?>">
+                     alt="<?=$details['category']; ?>">
             </div>
             <p class="lot-item__category">Категория:
                 <span><?= isset($added_data['category']) ? $added_data['category'] : $details['category'] ?></span></p>

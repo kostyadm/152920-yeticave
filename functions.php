@@ -46,21 +46,28 @@ function validate_email($email)
     return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
-function validate_picture($tmp_name, $path)
+function validate_picture()
 {
-    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-    $file_type = finfo_file($finfo, $tmp_name);
-    if ($file_type !== "image/jpeg") {
-        $jpg['error'] = 'Загрузите картинку в формате jpg';
-    } else {
-        move_uploaded_file($tmp_name, 'img/uploads/' . $path);
-        $jpg['path'] = $path;
+    if (isset($_FILES["lot_photo"]['name']) && !empty($_FILES["lot_photo"]['name'])) {
+        $tmp_name = $_FILES['lot_photo']['tmp_name'];
+        $path = $_FILES['lot_photo']['name'];
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $file_type = finfo_file($finfo, $tmp_name);
+        if ($file_type !== "image/jpeg") {
+            $jpg['error'] = 'Загрузите картинку в формате jpg';
+
+        } else {
+            move_uploaded_file($tmp_name, 'img/uploads/' . $path);
+            $jpg['path'] = $path;
+        }
     }
+    $jpg['error'] = 'Вы не загрузили файл';
     return $jpg;
 }
 
 function validate_lot_input($added_data, $required, $dict, $is_number)
 {
+    $errors = [];
     foreach ($added_data as $key => $value) {
         if (in_array($key, $required) && ($value == '' OR $value == 'Выберите категорию')) {
             $errors[$dict[$key]] = '- это поле необходимо заполнить';
@@ -76,6 +83,7 @@ function validate_lot_input($added_data, $required, $dict, $is_number)
 
 function validate_login_data($login_data)
 {
+    $errors = [];
     foreach ($login_data as $key => $value) {
         if ($value == '') {
             $errors[$key] = 'Это поле необходимо заполнить';
@@ -88,6 +96,14 @@ function validate_login_data($login_data)
     return $errors;
 }
 
+function minimum_bet_value($user_bet, $minimum_value)
+{
+    if ($user_bet < $minimum_value) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 
 

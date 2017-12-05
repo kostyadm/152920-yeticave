@@ -5,17 +5,15 @@ require_once('data.php');
 require_once('users_lots.php');
 
 session_start();
-
+$auth_status = include_template('non_auth_user.php', []);
 if (isset($_SESSION['user'])){
     $user=$_SESSION['user'];
-    $auth_status = include_template('auth_user.php', ['name' => $user['name'], 'avatar' => $user_avatar]);
-} else {
-    $auth_status = include_template('non_auth_user.php', []);
+    $auth_status = include_template('auth_user.php', ['user_name' => $user['user-name'], 'avatar' => $user_avatar]);
 }
 
 $main_menu = '';
 foreach ($cat as $key => $value):
-    $main_menu .= include_template('main_menu_category.php', ['key' => $key, 'name' => $value]);
+    $main_menu .= include_template('main_menu_category.php', ['key' => $key, 'category' => $value]);
 endforeach;
 
 $list_menu = '';
