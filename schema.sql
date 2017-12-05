@@ -65,4 +65,3 @@ CREATE UNIQUE INDEX email
 CREATE INDEX user_name
   ON users (name);
 
-
