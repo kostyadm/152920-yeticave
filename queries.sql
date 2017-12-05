@@ -1,7 +1,7 @@
 USE yeticave;
 
 INSERT INTO category
-(id, cat_name, is_deleted)
+(id, category, is_deleted)
 VALUES
 ('0', 'Доски и лыжи', '0'),
 ('1','Крепления','0'),
@@ -11,14 +11,14 @@ VALUES
 ('5','Разное','0');
 
 INSERT INTO users
-(id, registration_date, email, name, password, avatar, contacts)
+(id, registration_date, email, user_name, password, avatar, contacts)
 VALUES
 ('0','2017-12-03 17:43:01', 'ignat.v@gmail.com', 'Игнат', '$2y$10$OqvsKHQwr0Wk6FMZDoHo1uHoXd4UdxJG/5UDtUiie00XaxMHrW8ka','#','+781223904230' ),
 ('1','2017-12-03 17:43:02', 'kitty_93@li.ru', 'Леночка', '$2y$10$bWtSjUhwgggtxrnJ7rxmIe63ABubHQs0AS0hgnOo41IEdMHkYoSVa','#','+781223345345' ),
 ('2','2017-12-03 17:43:03', 'warrior07@mail.ru', 'Руслан', '$2y$10$2OxpEH7narYpkOT1H5cApezuzh10tZEEQ2axgFOaKW.55LxIJBgWW','#','+781224325903' );
 
 INSERT INTO lot
-(id, user_id, category_id, creation_date, name, description, photo, starting_price, end_date, step)
+(id, user_id, category_id, creation_date, lot_name, description, photo, starting_price, end_date, step)
 VALUES
 ('0', '0', '0', '2017-12-03 17:44:01', '2014 Rossignol District Snowboard', 'Клёвый борд, без царапин, почти новый', 'img/lot-1.jpg', '10999', '2018-01-03 17:44:01','300'),
 ('1', '2', '0', '2017-12-03 17:45:01', 'DC Ply Mens 2016/2017 Snowboard', 'Два сезона откатал, немного покоцаный. Норм борд!', 'img/lot-2.jpg', '159999', '2018-01-03 17:45:01','1000'),
@@ -37,7 +37,7 @@ VALUES
 SELECT cat_name
 FROM category;
 
-SELECT l.name, l.starting_price, l.photo, MAX(b.bet_value), COUNT(b.lot_id),c.cat_name
+SELECT l.lot_name, l.starting_price, l.photo, MAX(b.bet_value), COUNT(b.lot_id),c.category
 FROM lot l
 JOIN category c
 ON
@@ -48,15 +48,15 @@ WHERE end_date > CURRENT_TIME
 GROUP BY b.lot_id
 ORDER BY l.creation_date DESC;
 
-SELECT name, description, c.cat_name
+SELECT lot_name, description, c.catategory
 FROM lot
 JOIN category c
 ON category_id=c.id
-WHERE name='Куртка для сноуборда DC Mutiny Charocal' OR description LIKE '%борд%';
+WHERE lot_name='Куртка для сноуборда DC Mutiny Charocal' OR description LIKE '%борд%';
 
 UPDATE lot SET name='Маска Oakley Canopy' WHERE id = '5';
 
-SELECT l.name, b.bet_value, c.cat_name
+SELECT l.lot_name, b.bet_value, c.cat_name
 FROM lot l
 JOIN bet b
 ON l.id=b.lot_id
