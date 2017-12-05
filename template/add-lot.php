@@ -5,15 +5,15 @@
 </nav>
 
 <form class="form form--add-lot container <?= isset($errors['Наименование']) ? "form--invalid" : ""; ?>"
-      action="../add.php" method="post"
+      action="../add-lot.php" method="post"
       enctype="multipart/form-data" novalidate><!-- form--invalid -->
     <h2>Добавление лота</h2>
     <div class="form__container-two">
         <div class="form__item <?= isset($errors['Наименование']) ? "form__item--invalid" : ""; ?>">
             <!-- form__item--invalid -->
-            <label for="lot-name">Наименование</label>
-            <input id="lot-name" type="text" name="lot-name"
-                   value="<?= isset($added_data['lot-name']) ? $added_data['lot-name'] : ""; ?>"
+            <label for="lot_name">Наименование</label>
+            <input id="lot_name" type="text" name="lot_name"
+                   value="<?= isset($added_data['lot_name']) ? $added_data['lot_name'] : ""; ?>"
                    placeholder="Введите наименование лота" required>
             <span class="form__error">Введите наименование лота</span>
         </div>
