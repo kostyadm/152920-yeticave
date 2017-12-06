@@ -1,7 +1,6 @@
 <?php
 
 require_once('functions.php');
-require_once('users_lots.php');
 require_once('init.php');
 
 session_start();
@@ -11,23 +10,20 @@ if (isset($_SESSION['user'])) {
     $auth_status = include_template('auth_user.php', ['user_name' => $user['user-name'], 'avatar' => $user_avatar]);
 }
 
-if ($con) {
+
     $sql_cat = 'SELECT id, img_cat, category FROM categories ORDER BY id ASC';
-    $cat_result = mysqli_query($con, $sql_cat);
-    $cat = mysqli_fetch_all($cat_result, MYSQLI_ASSOC);
+    $cat=fetch_data ($con, $sql_cat);
 
     $sql_lot_data = '
       SELECT l.id, l.lot_name, l.starting_price, l.photo, c.category, l.category_id, l.end_date
       FROM lot l
       JOIN categories c
       ON l.category_id=c.id';
-    $lot_data_result = mysqli_query($con, $sql_lot_data);
-    $lot_data = mysqli_fetch_all($lot_data_result, MYSQLI_ASSOC);
+    $lot_data =fetch_data ($con, $sql_lot_data);
 
     $sql_max_bet = 'SELECT MAX(bet_value) AS \'current_price\', lot_id FROM bet GROUP BY lot_id ORDER BY lot_id';
-    $max_bet_result = mysqli_query($con, $sql_max_bet);
-    $max_bet = mysqli_fetch_all($max_bet_result, MYSQLI_ASSOC);
-}
+    $max_bet =fetch_data ($con, $sql_max_bet);
+
 
 $main_menu = '';
 foreach ($cat as $value):

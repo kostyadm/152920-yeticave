@@ -109,7 +109,14 @@ function minimum_bet_value($user_bet, $minimum_value)
     }
 }
 
-
+function fetch_data ($con, $sql)
+{
+    if ($con) {
+        $cat_result = mysqli_query($con, $sql);
+        $result = mysqli_fetch_all($cat_result, MYSQLI_ASSOC);
+        return $result;
+    }
+}
 
 
 

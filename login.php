@@ -1,17 +1,21 @@
 <?php
 
 require_once('functions.php');
-require_once('data.php');
-require_once('users_lots.php');
 require_once('userdata.php');
 require_once('init.php');
 
 session_start();
 
+$sql_cat = 'SELECT id, img_cat, category FROM categories ORDER BY id ASC';
+$cat=fetch_data ($con, $sql_cat);
+
+$sql_user = 'SELECT id, email, password FROM users';
+$users = fetch_data($con, $sql_user);
+
 //create navigation panel list
 $list_menu = '';
 foreach ($cat as $key => $value):
-    $list_menu .= include_template('nav_list_category.php', ['category' => $value]);
+    $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
 endforeach;
 
 if (isset($_SESSION['user'])) {
@@ -23,19 +27,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $login_data = $_POST;
     $errors = validate_login_data($login_data);
     $page_content = include_template('login.php', ['list_menu' => $list_menu, 'login_data' => $login_data, 'errors' => $errors]);
-
     if (count($errors) == 0) {
-        foreach ($users as $key => $value) {
+        foreach ($users as $value) {
             //verifies user
             $user_verify = FALSE;
             if ($login_data['email'] == $value['email']) {
                 $user_verify = TRUE;
-                $user_id = $key;
+                $user_id = $value['id'];
                 break;
             }
         }
         if ($user_verify) {
-            $password_verify = (password_verify($login_data['password'], $users[$user_id]['password']));
+            foreach ($users as $value) {
+                if($user_id==$value['id']){
+                    $password=$value['password'];
+                }
+            }
+            $password_verify = (password_verify($login_data['password'], $password));
         } else {
             $errors['email'] = 'Введённого адреса не существует';
         }
@@ -55,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $layout_content = preg_replace('<main class="container">', 'main', $layout_content);
     }
 } else {
-    $page_content = include_template('login.php', ['list_menu' => $list_menu, 'errors' => $errors]);
+    $page_content = include_template('login.php', ['list_menu' => $list_menu]);
     $layout_content = include_template('layout.php', ['page_title' => 'Войти', 'content' => $page_content, 'list_menu' => $list_menu, 'auth_status' => $auth_status]);
     $layout_content = preg_replace('<main class="container">', 'main', $layout_content);
 }
