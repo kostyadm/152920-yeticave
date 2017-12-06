@@ -13,9 +13,10 @@ CREATE TABLE users (
   CONSTRAINT user_pk PRIMARY KEY (id)
 );
 
-CREATE TABLE category (
+CREATE TABLE categories (
   id         INT      NOT NULL,
   category   CHAR(45) NULL,
+  img_cat	CHAR(45) NULL,
   is_deleted TINYINT  NOT NULL,
   CONSTRAINT category_pk PRIMARY KEY (id)
 );
@@ -26,14 +27,14 @@ CREATE TABLE lot (
   category_id    INT         NOT NULL,
 
   creation_date  TIMESTAMP   NULL,
-  lot_name           CHAR(60)    NULL,
+  lot_name       CHAR(60)    NULL,
   description    TEXT(65535) NOT NULL,
   photo          CHAR(100)   NOT NULL,
   starting_price INT         NULL,
   end_date       TIMESTAMP   NULL,
   step           INT         NULL,
   CONSTRAINT lot_pk PRIMARY KEY (id),
-  CONSTRAINT lot_category FOREIGN KEY lot_category (category_id) REFERENCES category (id),
+  CONSTRAINT lot_category FOREIGN KEY lot_category (category_id) REFERENCES categories (id),
   CONSTRAINT lot_user FOREIGN KEY lot_user (user_id) REFERENCES users(id)
 );
 
@@ -55,7 +56,7 @@ CREATE INDEX bet
   ON bet (bet_value);
 
 CREATE UNIQUE INDEX category
-  ON category (category);
+  ON categories (category);
 
 CREATE INDEX lot_name
   ON lot (lot_name);

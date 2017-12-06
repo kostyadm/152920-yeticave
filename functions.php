@@ -14,20 +14,24 @@ function include_template($filename, $args)
     return $result;
 }
 
+
+function time_remaining($end_date)
+{
 // устанавливаем часовой пояс в Московское время
-date_default_timezone_set('Europe/Moscow');
+    date_default_timezone_set('Europe/Moscow');
 
-// записать в эту переменную оставшееся время в этом формате (ЧЧ:ММ)
-$lot_time_remaining = "00:00";
-
-// временная метка для полночи следующего дня
-$tomorrow = strtotime('today midnight');
+    $ending = strtotime($end_date);
 
 // временная метка для настоящего времени
-$now = strtotime('now');
+    $now = strtotime('now');
 
-// далее нужно вычислить оставшееся время до начала следующих суток и записать его в переменную $lot_time_remaining
-$lot_time_remaining = gmdate("H:i", $tomorrow - $now);
+    $period = $ending - $now;
+    $lot_time_remaining = gmdate("H:i", $period);
+    if($period >86400){
+        $lot_time_remaining = gmdate("d дней H:i", $period);
+    }
+    return $lot_time_remaining;
+}
 
 function time_format($timestamp)
 {
