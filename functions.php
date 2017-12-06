@@ -46,9 +46,9 @@ function validate_email($email)
     return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
-function validate_picture()
+function validate_picture($photo_upload)
 {
-    if (isset($_FILES["lot_photo"]['name']) && !empty($_FILES["lot_photo"]['name'])) {
+    if (!empty($photo_upload)) {
         $tmp_name = $_FILES['lot_photo']['tmp_name'];
         $path = $_FILES['lot_photo']['name'];
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
