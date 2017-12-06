@@ -3,6 +3,7 @@ session_start();
 require_once('functions.php');
 require_once('users_lots.php');
 require_once('data.php');
+require_once('init.php');
 
 //create navigation panel list
 foreach ($cat as $key => $value):
