@@ -1,2 +1,6 @@
-<h2>Ошибка</h2>
-<p><?=$error['db_error'];?></p>
+<header>
+    <h2>Ошибка</h2>
+</header>
+<article>
+<p><?=$error;?></p>
+</article>

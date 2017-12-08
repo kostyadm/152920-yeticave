@@ -14,7 +14,6 @@ function include_template($filename, $args)
     return $result;
 }
 
-
 function time_remaining($end_date)
 {
 // устанавливаем часовой пояс в Московское время
@@ -27,7 +26,7 @@ function time_remaining($end_date)
 
     $period = $ending - $now;
     $lot_time_remaining = gmdate("H:i", $period);
-    if($period >86400){
+    if ($period > 86400) {
         $lot_time_remaining = gmdate("d дней H:i", $period);
     }
     return $lot_time_remaining;
@@ -54,7 +53,7 @@ function validate_picture($photo_upload)
 {
     if (!empty($photo_upload)) {
         $tmp_name = $_FILES['lot_photo']['tmp_name'];
-        $path = $_FILES['lot_photo']['name'];
+        $path = uniqid().'jpg';
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $tmp_name);
         if ($file_type !== "image/jpeg") {
@@ -109,15 +108,40 @@ function minimum_bet_value($user_bet, $minimum_value)
     }
 }
 
-function fetch_data ($con, $sql)
+function fetch_data($con, $sql)
 {
-    if ($con) {
-        $cat_result = mysqli_query($con, $sql);
-        $result = mysqli_fetch_all($cat_result, MYSQLI_ASSOC);
-        return $result;
-    }
+    $result = mysqli_query($con, $sql);
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    return $result;
+
 }
 
+function add_data($con, $sql)
+{
+    $result['ok'] = mysqli_query($con, $sql);
 
+    if (!$result['ok']) {
+        $error = mysqli_error($con);
+        $result['error'] = 'Ошибка MySQL: '. $error;
+    }
+    return $result;
+}
 
+function count_records($con, $table_name){
+    $sql_count = "SELECT COUNT(id) AS 'records' FROM ".$table_name;
+    $records_count = fetch_data($con, $sql_count);
+    $new_record=$records_count[0]['records'];
 
+    return $new_record;
+}
+
+function get_id($item_name, $array){
+    foreach ($array as $value){
+        if($item_name==$value['category']){
+            $id=intval($value['id']);
+            break;
+        }
+    }
+    return $id;
+}

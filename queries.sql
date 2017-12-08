@@ -13,9 +13,9 @@ VALUES
 INSERT INTO users
 (id, registration_date, email, user_name, password, avatar, contacts)
 VALUES
-('0','2017-12-03 17:43:01', 'ignat.v@gmail.com', 'Игнат', '$2y$10$OqvsKHQwr0Wk6FMZDoHo1uHoXd4UdxJG/5UDtUiie00XaxMHrW8ka','#','+781223904230' ),
-('1','2017-12-03 17:43:02', 'kitty_93@li.ru', 'Леночка', '$2y$10$bWtSjUhwgggtxrnJ7rxmIe63ABubHQs0AS0hgnOo41IEdMHkYoSVa','#','+781223345345' ),
-('2','2017-12-03 17:43:03', 'warrior07@mail.ru', 'Руслан', '$2y$10$2OxpEH7narYpkOT1H5cApezuzh10tZEEQ2axgFOaKW.55LxIJBgWW','#','+781224325903' );
+('0','2017-12-03 17:43:01', 'ignat.v@gmail.com', 'Игнат', '$2y$10$OqvsKHQwr0Wk6FMZDoHo1uHoXd4UdxJG/5UDtUiie00XaxMHrW8ka','img/avatar.jpg','+781223904230' ),
+('1','2017-12-03 17:43:02', 'kitty_93@li.ru', 'Леночка', '$2y$10$bWtSjUhwgggtxrnJ7rxmIe63ABubHQs0AS0hgnOo41IEdMHkYoSVa','img/avatar.jpg','+781223345345' ),
+('2','2017-12-03 17:43:03', 'warrior07@mail.ru', 'Руслан', '$2y$10$2OxpEH7narYpkOT1H5cApezuzh10tZEEQ2axgFOaKW.55LxIJBgWW','img/avatar.jpg','+781224325903' );
 
 INSERT INTO lot
 (id, user_id, category_id, creation_date, lot_name, description, photo, starting_price, end_date, step)

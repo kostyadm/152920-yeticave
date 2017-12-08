@@ -1,11 +1,11 @@
 <li class="lots__item lot">
             <div class="lot__image">
-                <img src="<?= $photo ?>" width='350' height='260'
-                     alt="<?= $category ?>">
+                <img src="<?= $lot_data['photo'] ?>" width='350' height='260'
+                     alt="<?= $lot_data['category'] ?>">
             </div>
             <div class='lot__info'>
-                <span class='lot__category'><?=$category?></span>
-<h3 class="lot__title"><a class="text-link" href="lot.php?id=<?=$key;?>"><?= $lot_name ?></a></h3>
+                <span class='lot__category'><?=$lot_data['category']?></span>
+<h3 class="lot__title"><a class="text-link" href="lot.php?id=<?=$lot_data['id'];?>"><?= $lot_data['lot_name'] ?></a></h3>
 <div class='lot__state'>
     <div class='lot__rate'>
         <span class='lot__amount'> Стартовая цена </span>
