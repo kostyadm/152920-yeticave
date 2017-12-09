@@ -40,7 +40,7 @@ function time_format($timestamp)
     } elseif ($time_formated < 60) {
         return $time_string = round($time_formated) . ' минут назад';
     } else {
-        return $time_string = (round($time_formated) / 60) . ' часов назад';
+        return $time_string = round(($time_formated) / 60) . ' часов назад';
     }
 }
 
@@ -53,7 +53,7 @@ function validate_picture($photo_upload)
 {
     if (!empty($photo_upload)) {
         $tmp_name = $_FILES['lot_photo']['tmp_name'];
-        $path = uniqid().'jpg';
+        $path = uniqid() . 'jpg';
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $tmp_name);
         if ($file_type !== "image/jpeg") {
@@ -99,15 +99,6 @@ function validate_login_data($login_data)
     return $errors;
 }
 
-function minimum_bet_value($user_bet, $minimum_value)
-{
-    if ($user_bet < $minimum_value) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
 function fetch_data($con, $sql)
 {
     $result = mysqli_query($con, $sql);
@@ -117,29 +108,39 @@ function fetch_data($con, $sql)
 
 }
 
+function fetch_array($con, $sql)
+{
+    $result = mysqli_query($con, $sql);
+    $result = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+    return $result;
+}
+
 function add_data($con, $sql)
 {
     $result['ok'] = mysqli_query($con, $sql);
 
     if (!$result['ok']) {
         $error = mysqli_error($con);
-        $result['error'] = 'Ошибка MySQL: '. $error;
+        $result['error'] = 'Ошибка MySQL: ' . $error;
     }
     return $result;
 }
 
-function count_records($con, $table_name){
-    $sql_count = "SELECT COUNT(id) AS 'records' FROM ".$table_name;
+function count_records($con, $table_name)
+{
+    $sql_count = "SELECT COUNT(id) AS 'records' FROM " . $table_name;
     $records_count = fetch_data($con, $sql_count);
-    $new_record=$records_count[0]['records'];
+    $new_record = $records_count[0]['records'];
 
     return $new_record;
 }
 
-function get_id($item_name, $array){
-    foreach ($array as $value){
-        if($item_name==$value['category']){
-            $id=intval($value['id']);
+function get_id($item_name, $array)
+{
+    foreach ($array as $value) {
+        if ($item_name == $value['category']) {
+            $id = intval($value['id']);
             break;
         }
     }

@@ -38,16 +38,15 @@ $sql_bet = 'SELECT u.user_name, b.bet_value, b.reg_date
             ORDER BY b.bet_value DESC';
 $bet = fetch_data($con, $sql_bet);
 
-$sql_max_bet = 'SELECT MAX(bet_value) AS \'current_price\', lot_id FROM bet GROUP BY lot_id ORDER BY lot_id';
-$max_bet = fetch_data($con, $sql_max_bet);
-$price = $lot_data['starting_price'];
-$min_bet=$price + $lot_data['step'];
-foreach ($max_bet as $val) {
-    if ($val['lot_id'] == $lot_data['id']) {
-        $price = $val['current_price'];
-        $min_bet=$price + $lot_data['step'];
+$sql_max_bet = 'SELECT lot_id, MAX(bet_value) AS \'current_price\' FROM bet WHERE lot_id=' . $id . ' GROUP BY lot_id ORDER BY lot_id';
+$max_bet = fetch_array($con, $sql_max_bet);
 
-    }
+$price = $lot_data['starting_price'];
+$min_bet = $price + $lot_data['step'];
+
+if ($max_bet['lot_id'] == $lot_data['id']) {
+    $price = $max_bet['current_price'];
+    $min_bet = $price + $lot_data['step'];
 }
 // authentication check
 if (isset($_SESSION['user'])) {
@@ -60,7 +59,7 @@ if (isset($_SESSION['user'])) {
         $in_cart = json_decode($_COOKIE['cart'], TRUE);
     }
     $lot_time_remaining = time_remaining($lot_data['end_date']);
-    $do_offer = include_template('offer.php', ['price' => $price, 'min_bet'=>$min_bet, 'id' => $lot_data['id']]);
+    $do_offer = include_template('offer.php', ['price' => $price, 'min_bet' => $min_bet, 'id' => $lot_data['id']]);
     //checks, if there are any bets made by user for this item
     if (count($in_cart) > 0) {
         foreach ($in_cart as $value) {
@@ -69,7 +68,7 @@ if (isset($_SESSION['user'])) {
                 $do_offer = '';
                 break;
             } else {
-                $do_offer = include_template('offer.php', ['price' => $price,'min_bet'=>$min_bet, 'id' => $lot_data['id']]);
+                $do_offer = include_template('offer.php', ['price' => $price, 'min_bet' => $min_bet, 'id' => $lot_data['id']]);
             }
         }
     }
@@ -80,17 +79,17 @@ if ($id >= count_records($con, 'lot')) {
     $page_content = include_template('404.php', ['list_menu' => $list_menu]);
 } else {
 
-    $sql_bets_count = "SELECT COUNT(id) AS 'records' FROM bet WHERE lot_id=".$id;
+    $sql_bets_count = "SELECT COUNT(id) AS 'records' FROM bet WHERE lot_id=" . $id;
     $records_count = fetch_data($con, $sql_bets_count);
-    $bets_count=$records_count[0]['records'];
-
+    $bets_count = $records_count[0]['records'];
+    $lot_time_remaining = time_remaining($lot_data['end_date']);
     if ($bet) {
         foreach ($bet as $bets) {
             $bets_return .= include_template('bets.php', ['bet' => $bets]);
         }
     }
 
-    $page_content = include_template('lot.php', ['lot_data' => $lot_data,'number'=>$bets_count, 'price' => $price,'min_bet'=>$min_bet, 'bets' => $bets_return, 'list_menu' => $list_menu, 'time' => $lot_time_remaining, 'do_offer' => $do_offer]);
+    $page_content = include_template('lot.php', ['lot_data' => $lot_data, 'number' => $bets_count, 'price' => $price, 'min_bet' => $min_bet, 'bets' => $bets_return, 'list_menu' => $list_menu, 'time' => $lot_time_remaining, 'do_offer' => $do_offer]);
 }
 
 $layout_content = include_template('layout.php', ['page_title' => $lot_data['lot_name'], 'auth_status' => $auth_status, 'content' => $page_content, 'list_menu' => $list_menu]);
