@@ -45,11 +45,15 @@ if (isset($_GET['category'])) {
         }
     }
 } else {
+
     $cur_page = isset($_GET['page'])?intval($_GET['page']):1;
     $limit = 3;
     $sql_pag = 'SELECT COUNT(*) AS cnt FROM lot';
     $items_count = fetch_array($con, $sql_pag);
     $pages_count = ceil(($items_count['cnt']) / $limit);
+    if($cur_page==0 OR $cur_page>$pages_count){
+        $cur_page=1;
+    }
     $offset = ($cur_page - 1) * $limit;
 
     $pages = range(1, $pages_count);
