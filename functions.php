@@ -49,22 +49,20 @@ function validate_email($email)
     return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
-function validate_picture($photo_upload)
-{
+function validate_picture($photo_upload, $tmp_name)
+{   $jpg=[];
     if (!empty($photo_upload)) {
-        $tmp_name = $_FILES['lot_photo']['tmp_name'];
-        $path = uniqid() . 'jpg';
+        $path = uniqid() . '.jpg';
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $tmp_name);
         if ($file_type !== "image/jpeg") {
             $jpg['error'] = 'Загрузите картинку в формате jpg';
 
         } else {
-            move_uploaded_file($tmp_name, 'img/' . $path);
-            $jpg['path'] = $path;
+            move_uploaded_file($tmp_name, 'img/uploads/' . $path);
+            $jpg['path'] = 'img/uploads/' . $path;
         }
     }
-    $jpg['error'] = 'Вы не загрузили файл';
     return $jpg;
 }
 
@@ -98,6 +96,7 @@ function validate_input_data($input_data)
     }
     return $errors;
 }
+
 function fetch_data($con, $sql)
 {
     $result = mysqli_query($con, $sql);

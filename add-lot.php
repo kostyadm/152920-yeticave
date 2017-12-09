@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $jpg = [];
     if (isset($_FILES["lot_photo"]['name'])) {
         $photo_upload = $_FILES["lot_photo"]['name'];
-        $jpg = validate_picture($photo_upload);
+        $tmp_name = $_FILES['lot_photo']['tmp_name'];
+        $jpg = validate_picture($photo_upload, $tmp_name);
     }
     if (isset($jpg['error'])) {
         $picture_errors = $jpg['error'];

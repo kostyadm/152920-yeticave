@@ -35,11 +35,11 @@
         <div class="preview">
             <button class="preview__remove" type="button">x</button>
             <div class="preview__img">
-                <img src="img/avatar.jpg" width="113" height="113" alt="Ваш аватар">
+                <img src="<?= $jpg['path']; ?>" width="113" height="113" alt="Ваш аватар">
             </div>
         </div>
         <div class="form__input-file">
-            <input class="visually-hidden" type="file" id="photo2" value="">
+            <input class="visually-hidden" type="file" id="photo2" value="" name="avatar">
             <label for="photo2">
                 <span>+ Добавить</span>
             </label>

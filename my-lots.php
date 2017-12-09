@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     //check if bet is big enough
-    if ($my_lots[$index]['cost'] < $min_bet) {
+    if ($my_lots[$index]['cost'] < $min_bet && !is_numeric($my_lots[$index]['cost'])) {
         header('Location:/lot.php?id=' . $my_lots[$index]['lot_id'] . '');
         exit;
     }

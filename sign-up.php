@@ -15,7 +15,7 @@ $list_menu = '';
 foreach ($cat as $value):
     $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
 endforeach;
-
+$page_content = include_template('sign-up.php', ['list_menu' => $list_menu]);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sign_up_data = [];
     foreach ($_POST as $key => $value) {
@@ -25,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $sql_user = 'SELECT email FROM users';
     $users = fetch_data($con, $sql_user);
-
     foreach ($users as $value) {
         //verifies user
         $user_verify = FALSE;
@@ -34,16 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             break;
         }
     }
-
     $jpg = [];
-    if (isset($_FILES["lot_photo"]['name'])) {
-        $photo_upload = $_FILES["lot_photo"]['name'];
-        $jpg = validate_picture($photo_upload);
+    if (isset($_FILES["avatar"]['name'])) {
+        $photo_upload = $_FILES["avatar"]['name'];
+        $tmp_name = $_FILES["avatar"]['tmp_name'];
+        $jpg = validate_picture($photo_upload, $tmp_name);
     }
-    if (isset($jpg['error'])) {
-        $picture_errors = $jpg['error'];
-    }
-    $picture = '';
+
+    $picture='';
     if (isset($jpg['path'])) {
         $picture = $jpg['path'];
     }
@@ -59,17 +56,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql_add_user = "INSERT INTO users (id, registration_date, email, user_name, password, avatar, contacts)
                         VALUES(" . $new_record . ",NOW(),?,?,?,?,?)";
         $stmt = mysqli_prepare($con, $sql_add_user);
-        mysqli_stmt_bind_param($stmt, 'sssss', $email, $user_name, $password, $picture,  $contacts);
+        mysqli_stmt_bind_param($stmt, 'sssss', $email, $user_name, $password, $picture, $contacts);
         $res = mysqli_stmt_execute($stmt);
         if ($res) {
             header('Location: login.php');
         } else {
             $page_content = include_template('error.php', ['error' => mysqli_error($con)]);
+
         }
     }
-
 }
-$page_content = include_template('sign-up.php', ['list_menu' => $list_menu, 'errors' => $errors, 'sign_up_data' => $sign_up_data]);
+
 $layout_content = include_template('layout.php', ['page_title' => 'Регистрация', 'content' => $page_content, 'list_menu' => $list_menu]);
 $layout_content = preg_replace('<main class="container">', 'main', $layout_content);
 print($layout_content);
