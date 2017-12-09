@@ -8,9 +8,9 @@ $cat = fetch_data($con, $sql_cat);
 
 //create navigation panel list
 $list_menu = '';
-foreach ($cat as $value):
+foreach ($cat as $value){
     $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
-endforeach;
+}
 
 
 // authentication check
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     //check if bet is big enough
-    if ($my_lots[$index]['cost'] < $min_bet && !is_numeric($my_lots[$index]['cost'])) {
+    if ($my_lots[$index]['cost'] < $min_bet OR !is_numeric($my_lots[$index]['cost'])) {
         header('Location:/lot.php?id=' . $my_lots[$index]['lot_id'] . '');
         exit;
     }

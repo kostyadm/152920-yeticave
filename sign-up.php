@@ -12,9 +12,9 @@ $sql_cat = 'SELECT id, img_cat, category FROM categories ORDER BY id ASC';
 $cat = fetch_data($con, $sql_cat);
 //create navigation panel list
 $list_menu = '';
-foreach ($cat as $value):
+foreach ($cat as $value) {
     $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
-endforeach;
+}
 $page_content = include_template('sign-up.php', ['list_menu' => $list_menu]);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sign_up_data = [];
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $jpg = validate_picture($photo_upload, $tmp_name);
     }
 
-    $picture='';
+    $picture = '';
     if (isset($jpg['path'])) {
         $picture = $jpg['path'];
     }

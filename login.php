@@ -13,9 +13,9 @@ $users = fetch_data($con, $sql_user);
 
 //create navigation panel list
 $list_menu = '';
-foreach ($cat as $key => $value):
+foreach ($cat as $key => $value){
     $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
-endforeach;
+}
 
 if (isset($_SESSION['user'])) {
     header("Location:/index.php");

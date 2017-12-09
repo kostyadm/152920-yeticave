@@ -22,14 +22,14 @@ $sql_max_bet = 'SELECT MAX(bet_value) AS \'current_price\', lot_id FROM bet GROU
 $max_bet = fetch_data($con, $sql_max_bet);
 
 $main_menu = '';
-foreach ($cat as $value):
+foreach ($cat as $value){
     $main_menu .= include_template('main_menu_category.php', ['key' => $value['id'], 'img_cat' => $value['img_cat'], 'category' => $value['category']]);
-endforeach;
+}
 
 $list_menu = '';
-foreach ($cat as $key => $value):
+foreach ($cat as $key => $value){
     $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
-endforeach;
+}
 
 if (isset($_GET['category'])) {
     $chosen_category = $_GET['category'];

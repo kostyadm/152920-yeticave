@@ -8,9 +8,9 @@ $cat = fetch_data($con, $sql_cat);
 
 //create navigation panel list
 $list_menu = '';
-foreach ($cat as $value):
+foreach ($cat as $value){
     $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
-endforeach;
+}
 
 session_start();
 $page_content = include_template('403.php', ['list_menu' => $list_menu]);
