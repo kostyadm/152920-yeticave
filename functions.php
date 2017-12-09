@@ -14,20 +14,23 @@ function include_template($filename, $args)
     return $result;
 }
 
+function time_remaining($end_date)
+{
 // устанавливаем часовой пояс в Московское время
-date_default_timezone_set('Europe/Moscow');
+    date_default_timezone_set('Europe/Moscow');
 
-// записать в эту переменную оставшееся время в этом формате (ЧЧ:ММ)
-$lot_time_remaining = "00:00";
-
-// временная метка для полночи следующего дня
-$tomorrow = strtotime('today midnight');
+    $ending = strtotime($end_date);
 
 // временная метка для настоящего времени
-$now = strtotime('now');
+    $now = strtotime('now');
 
-// далее нужно вычислить оставшееся время до начала следующих суток и записать его в переменную $lot_time_remaining
-$lot_time_remaining = gmdate("H:i", $tomorrow - $now);
+    $period = $ending - $now;
+    $lot_time_remaining = gmdate("H:i", $period);
+    if ($period > 86400) {
+        $lot_time_remaining = gmdate("d дней H:i", $period);
+    }
+    return $lot_time_remaining;
+}
 
 function time_format($timestamp)
 {
@@ -37,7 +40,7 @@ function time_format($timestamp)
     } elseif ($time_formated < 60) {
         return $time_string = round($time_formated) . ' минут назад';
     } else {
-        return $time_string = (round($time_formated) / 60) . ' часов назад';
+        return $time_string = round(($time_formated) / 60) . ' часов назад';
     }
 }
 
@@ -46,11 +49,10 @@ function validate_email($email)
     return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
-function validate_picture($photo_upload)
-{
+function validate_picture($photo_upload, $tmp_name)
+{   $jpg=[];
     if (!empty($photo_upload)) {
-        $tmp_name = $_FILES['lot_photo']['tmp_name'];
-        $path = $_FILES['lot_photo']['name'];
+        $path = uniqid() . '.jpg';
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $tmp_name);
         if ($file_type !== "image/jpeg") {
@@ -58,10 +60,9 @@ function validate_picture($photo_upload)
 
         } else {
             move_uploaded_file($tmp_name, 'img/uploads/' . $path);
-            $jpg['path'] = $path;
+            $jpg['path'] = 'img/uploads/' . $path;
         }
     }
-    $jpg['error'] = 'Вы не загрузили файл';
     return $jpg;
 }
 
@@ -81,10 +82,10 @@ function validate_lot_input($added_data, $required, $dict, $is_number)
     return $errors;
 }
 
-function validate_login_data($login_data)
+function validate_input_data($input_data)
 {
     $errors = [];
-    foreach ($login_data as $key => $value) {
+    foreach ($input_data as $key => $value) {
         if ($value == '') {
             $errors[$key] = 'Это поле необходимо заполнить';
         } elseif ($key == 'email') {
@@ -96,17 +97,50 @@ function validate_login_data($login_data)
     return $errors;
 }
 
-function minimum_bet_value($user_bet, $minimum_value)
+function fetch_data($con, $sql)
 {
-    if ($user_bet < $minimum_value) {
-        return false;
-    } else {
-        return true;
-    }
+    $result = mysqli_query($con, $sql);
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    return $result;
+
 }
 
+function fetch_array($con, $sql)
+{
+    $result = mysqli_query($con, $sql);
+    $result = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
+    return $result;
+}
 
+function add_data($con, $sql)
+{
+    $result['ok'] = mysqli_query($con, $sql);
 
+    if (!$result['ok']) {
+        $error = mysqli_error($con);
+        $result['error'] = 'Ошибка MySQL: ' . $error;
+    }
+    return $result;
+}
 
+function count_records($con, $table_name)
+{
+    $sql_count = "SELECT COUNT(id) AS 'records' FROM " . $table_name;
+    $records_count = fetch_data($con, $sql_count);
+    $new_record = $records_count[0]['records'];
 
+    return $new_record;
+}
+
+function get_id($item_name, $array)
+{
+    foreach ($array as $value) {
+        if ($item_name == $value['category']) {
+            $id = intval($value['id']);
+            break;
+        }
+    }
+    return $id;
+}

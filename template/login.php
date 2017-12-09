@@ -4,7 +4,6 @@
     </ul>
 </nav>
 
-
     <form class="form container <?=isset($errors) ? 'form--invalid':'';?>" action="login.php" method="post" novalidate> <!-- form--invalid -->
         <h2>Вход</h2>
         <div class="form__item <?=isset($errors['email']) ? 'form__item--invalid':'';?>"> <!-- form__item--invalid -->
