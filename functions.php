@@ -99,8 +99,8 @@ function validate_input_data($input_data)
 
 function fetch_data($con, $sql)
 {
-    $result = mysqli_query($con, $sql);
-    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $result1 = mysqli_query($con, $sql);
+    $result = mysqli_fetch_all($result1, MYSQLI_ASSOC);
 
     return $result;
 
