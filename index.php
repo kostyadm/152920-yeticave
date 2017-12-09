@@ -45,7 +45,7 @@ if (isset($_GET['category'])) {
         }
     }
 } else {
-    $cur_page = $_GET['page'] ?? 1;
+    $cur_page = isset($_GET['page'])?intval($_GET['page']):1;
     $limit = 3;
     $sql_pag = 'SELECT COUNT(*) AS cnt FROM lot';
     $items_count = fetch_array($con, $sql_pag);
@@ -63,19 +63,13 @@ if (isset($_GET['category'])) {
       FROM lot l
       JOIN categories c
       ON l.category_id=c.id
-      LIMIT ' . $page_items . '
-      OFFSET ' . $offset;
+      LIMIT '.$limit.'
+      OFFSET '.$offset;
     $result= mysqli_query($con, $sql_lot_data);
-   /* if (!$result){
-        $error = 'Ошибка: ' . mysqli_connect_error();
-        $page_content = include_template('error.php', ['error' => $error]);
-        $layout_content = include_template('layout.php', ['page_title' => 'Главная страница', 'auth_status' => $auth_status, 'content' => $page_content, 'list_menu' => $list_menu]);
-        print($layout_content);
-        exit;
-    }*/
-    $lot_data = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    foreach ($lot_data as $value) {
+    $new_lot_data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    foreach ($new_lot_data as $value) {
         $lot_time_remaining = time_remaining($value['end_date']);
         $price = $value['starting_price'];
         foreach ($max_bet as $val) {
