@@ -24,7 +24,7 @@ if (isset($_SESSION['user'])) {
 // request method check
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $login_data = $_POST;
-    $errors = validate_login_data($login_data);
+    $errors = validate_input_data($login_data);
 
     if (count($errors) == 0) {
         foreach ($users as $key => $value) {

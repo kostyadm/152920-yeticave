@@ -53,15 +53,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $end_date = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $added_data['lot-date'])));
         $step = $added_data['lot-step'];
         $sql_add_lot = "INSERT INTO lot (id, user_id, category_id, creation_date, lot_name, description, photo, starting_price, step, end_date)
-                        VALUES(".$new_record.",".$user['id'].",?,NOW(),?,?,?,?,?,?)";
+                        VALUES(" . $new_record . "," . $user['id'] . ",?,NOW(),?,?,?,?,?,?)";
         $stmt = mysqli_prepare($con, $sql_add_lot);
         mysqli_stmt_bind_param($stmt, 'isssiis', $category_id, $add_lot_name, $description, $picture, $starting_price, $step, $end_date);
-        $res=mysqli_stmt_execute($stmt);
-        if($res){
-            $lot_id = count_records($con, 'lot')-1;
-            header('Location: lot.php?id='.$lot_id);
-        }else{
-        $page_content = include_template('error.php', ['error' => mysqli_error($con)]);}
+        $res = mysqli_stmt_execute($stmt);
+        if ($res) {
+            $lot_id = count_records($con, 'lot') - 1;
+            header('Location: lot.php?id=' . $lot_id);
+        } else {
+            $page_content = include_template('error.php', ['error' => mysqli_error($con)]);
+        }
     }
 }
 

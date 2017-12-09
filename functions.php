@@ -60,7 +60,7 @@ function validate_picture($photo_upload)
             $jpg['error'] = 'Загрузите картинку в формате jpg';
 
         } else {
-            move_uploaded_file($tmp_name, 'img/uploads/' . $path);
+            move_uploaded_file($tmp_name, 'img/' . $path);
             $jpg['path'] = $path;
         }
     }
@@ -84,10 +84,10 @@ function validate_lot_input($added_data, $required, $dict, $is_number)
     return $errors;
 }
 
-function validate_login_data($login_data)
+function validate_input_data($input_data)
 {
     $errors = [];
-    foreach ($login_data as $key => $value) {
+    foreach ($input_data as $key => $value) {
         if ($value == '') {
             $errors[$key] = 'Это поле необходимо заполнить';
         } elseif ($key == 'email') {
@@ -98,7 +98,6 @@ function validate_login_data($login_data)
     }
     return $errors;
 }
-
 function fetch_data($con, $sql)
 {
     $result = mysqli_query($con, $sql);
