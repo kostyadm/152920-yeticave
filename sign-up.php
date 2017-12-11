@@ -11,6 +11,7 @@ if (isset($_SESSION['user'])) {
 $list_menu = list_menu($con);
 
 $page_content = include_template('sign-up.php', ['list_menu' => $list_menu]);
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sign_up_data = [];
     foreach ($_POST as $key => $value) {

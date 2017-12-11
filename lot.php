@@ -7,13 +7,13 @@ session_start();
 
 $list_menu = list_menu($con);
 
-
 $auth_status = include_template('non_auth_user.php', []);
 $do_offer = '';
 
 //checks, if item's id is set
 $id = isset($_GET['id']) ? intval($_GET['id']) : "";
 
+//gets lot data
 $sql_lot_data = '
       SELECT l.id, l.lot_name,l.description, l.starting_price, l.photo, c.category, l.category_id, l.end_date, l.step
       FROM lot l
@@ -23,6 +23,7 @@ $sql_lot_data = '
 $result = mysqli_query($con, $sql_lot_data);
 $lot_data = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
+//selects bets for lot
 $sql_bet = 'SELECT u.user_name, b.bet_value, b.reg_date
             FROM bet b
             JOIN users u
@@ -31,16 +32,9 @@ $sql_bet = 'SELECT u.user_name, b.bet_value, b.reg_date
             ORDER BY b.bet_value DESC';
 $bet = fetch_data($con, $sql_bet);
 
-$sql_max_bet = 'SELECT lot_id, MAX(bet_value) AS \'current_price\' FROM bet WHERE lot_id=' . $id . ' GROUP BY lot_id ORDER BY lot_id';
-$max_bet = fetch_array($con, $sql_max_bet);
+$min_bet = min_bet ($id, $con, $lot_data);
+$price = $min_bet - $lot_data['step'];
 
-$price = $lot_data['starting_price'];
-$min_bet = $price + $lot_data['step'];
-
-if ($max_bet['lot_id'] == $lot_data['id']) {
-    $price = $max_bet['current_price'];
-    $min_bet = $price + $lot_data['step'];
-}
 // authentication check
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
@@ -70,7 +64,7 @@ if (isset($_SESSION['user'])) {
 if ($id >= count_records($con, 'lot')) {
     $page_content = include_template('404.php', ['list_menu' => $list_menu]);
 } else {
-
+    //sets all bet values for lot
     $sql_bets_count = "SELECT COUNT(id) AS 'records' FROM bet WHERE lot_id=" . $id;
     $records_count = fetch_data($con, $sql_bets_count);
     $bets_count = $records_count[0]['records'];

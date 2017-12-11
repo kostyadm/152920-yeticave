@@ -45,13 +45,15 @@
                 <img src="img/uploads/<?= $jpg['path']; ?>" width="113" height="113" alt="Изображение лота">
             </div>
         </div>
-        <div class="form__input-file">
+        <div class="form__input-file <?= isset($errors['Изображение']) ? "form__item--invalid" : ""; ?>">
             <input class="visually-hidden" type="file" id="photo2" value=""
-                   name="lot_photo">
+                   name="lot_photo" required>
             <label for="photo2">
                 <span>+ Добавить</span>
             </label>
+            <span class="form__error"> <?= isset($errors['Изображение']) ? $errors['Изображение'] : ""; ?></span>
         </div>
+
     </div>
     <div class="form__container-three">
         <div class="form__item form__item--small <?= isset($errors['Начальная цена']) ? "form__item--invalid" : ""; ?>">
@@ -70,7 +72,7 @@
         </div>
         <div class="form__item <?= isset($errors['Дата окончания торгов']) ? "form__item--invalid" : ""; ?>">
             <label for="lot-date">Дата окончания торгов</label>
-            <input class="form__input-date" id="lot-date" type="date" name="lot-date"
+            <input class="form__input-date" id="lot-date" type="text" name="lot-date"
                    value="<?= isset($added_data['lot-date']) ? $added_data['lot-date'] : ""; ?>" required>
             <span class="form__error"><?= isset($errors['Дата окончания торгов']) ? $errors['Дата окончания торгов'] : ""; ?></span>
         </div>

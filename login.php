@@ -16,7 +16,9 @@ if (isset($_SESSION['user'])) {
 }
 // request method check
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $login_data = $_POST;
+    foreach ($_POST as $key => $value) {
+        $login_data[$key] = htmlspecialchars($value);
+    }
     $errors = validate_input_data($login_data);
 
     if (count($errors) == 0) {
