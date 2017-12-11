@@ -120,6 +120,17 @@ function fetch_array($con, $sql)
     return $result;
 }
 
+function list_menu($con){
+    $sql_cat = 'SELECT id, img_cat, category FROM categories ORDER BY id ASC';
+    $cat = fetch_data($con, $sql_cat);
+//create navigation panel list
+    $list_menu = '';
+    foreach ($cat as $value) {
+        $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
+    }
+    return $list_menu;
+}
+
 function add_data($con, $sql)
 {
     $result['ok'] = mysqli_query($con, $sql);

@@ -5,14 +5,7 @@ require_once('init.php');
 
 session_start();
 
-$sql_cat = 'SELECT id, img_cat, category FROM categories ORDER BY id ASC';
-$cat = fetch_data($con, $sql_cat);
-
-//create navigation panel list
-$list_menu = '';
-foreach ($cat as $value){
-    $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
-}
+$list_menu = list_menu($con);
 
 
 $auth_status = include_template('non_auth_user.php', []);

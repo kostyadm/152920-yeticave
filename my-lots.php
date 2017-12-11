@@ -3,15 +3,7 @@ session_start();
 require_once('functions.php');
 require_once('init.php');
 
-$sql_cat = 'SELECT id, img_cat, category FROM categories ORDER BY id ASC';
-$cat = fetch_data($con, $sql_cat);
-
-//create navigation panel list
-$list_menu = '';
-foreach ($cat as $value) {
-    $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
-}
-
+$list_menu = list_menu($con);
 
 // authentication check
 if (!isset($_SESSION['user'])) {
@@ -45,9 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    /*adding bets to bet and my_lots*/
+    /*adding bets to bet */
     $new_record = count_records($con, 'bet');
-    $new_record_my_lots = count_records($con, 'my_lots');
     $user_id = $_SESSION['user']['id'];
     $lot_id = $user_input['lot_id'];
     $bet_value = intval($user_input['cost']);
@@ -64,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     FROM lot l
                     JOIN categories c ON c.id=l.category_id
                     JOIN bet b ON l.id=b.lot_id
-                    WHERE b.user_id=' . $_SESSION['user']['id'];
+                    WHERE b.user_id=' . $user['id'];
     $my_lots = fetch_data($con, $sql_my_lots);
 
     foreach ($my_lots as $value) {
@@ -83,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     FROM lot l
                     JOIN categories c ON c.id=l.category_id
                     JOIN bet b ON l.id=b.lot_id
-                    WHERE b.user_id=' . $_SESSION['user']['id'];
+                    WHERE b.user_id=' . $user['id'];
     $my_lots = fetch_data($con, $sql_my_lots);
 
     foreach ($my_lots as $value) {

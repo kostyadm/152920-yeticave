@@ -3,14 +3,7 @@
 require_once('functions.php');
 require_once('init.php');
 
-$sql_cat = 'SELECT id, img_cat, category FROM categories ORDER BY id ASC';
-$cat = fetch_data($con, $sql_cat);
-
-//create navigation panel list
-$list_menu = '';
-foreach ($cat as $value){
-    $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
-}
+$list_menu = list_menu($con);
 
 session_start();
 $page_content = include_template('403.php', ['list_menu' => $list_menu]);
