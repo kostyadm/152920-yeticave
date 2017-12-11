@@ -12,4 +12,9 @@
     <ul class="lots__list">
         <?=($lots_list);?>
     </ul>
+    <ul class="pagination-list">
+        <li class="pagination-item pagination-item-prev"><a href="index.php?page=<?=$cur_page-1?>">Назад</a></li>
+        <?=$pagination?>
+        <li class="pagination-item pagination-item-next"><a href="index.php?page=<?=$cur_page+1?>">Вперед</a></li>
+    </ul>
 </section>

@@ -3,14 +3,9 @@
 require_once('functions.php');
 require_once('init.php');
 
+$list_menu = list_menu($con);
 $sql_cat = 'SELECT id, img_cat, category FROM categories ORDER BY id ASC';
 $cat = fetch_data($con, $sql_cat);
-
-//create navigation panel list
-$list_menu = '';
-foreach ($cat as $value){
-    $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
-}
 
 session_start();
 $page_content = include_template('403.php', ['list_menu' => $list_menu]);
@@ -22,12 +17,12 @@ if (isset($_SESSION['user'])) {
     $page_content = include_template('add-lot.php', ['cat' => $cat, 'list_menu' => $list_menu]);
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $added_data = $_POST;
-    /*эти массивы можно здесь оставить?*/
-    $required = ['lot-name', 'category', 'message', 'lot-rate', 'lot-step', 'lot-date'];
-    $dict = ['lot-name' => 'Наименование', 'category' => 'Категория', 'message' => 'Описание', 'lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки', 'lot-date' => 'Дата окончания торгов', 'email' => 'email', 'password' => 'Пароль'];
-    $is_number = ['lot-rate', 'lot-step'];
-    $errors = validate_lot_input($added_data, $required, $dict, $is_number);
+    foreach ($_POST as $key => $value) {
+        $added_data[$key] = htmlspecialchars($value);
+    }
+    $required = ['lot_name', 'category', 'message','lot_photo', 'lot-rate', 'lot-step', 'lot-date'];
+    $dict = ['lot_name' => 'Наименование', 'category' => 'Категория', 'message' => 'Описание', 'Изображение'=>'lot_photo','lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки', 'lot-date' => 'Дата окончания торгов', 'email' => 'email', 'password' => 'Пароль'];
+    $errors = validate_lot_input($added_data, $required, $dict);
 
     $jpg = [];
     if (isset($_FILES["lot_photo"]['name'])) {
@@ -36,14 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $jpg = validate_picture($photo_upload, $tmp_name);
     }
     if (isset($jpg['error'])) {
-        $picture_errors = $jpg['error'];
+        $errors['Изображение'] = $jpg['error'];
     }
     $picture = '';
     if (isset($jpg['path'])) {
         $picture = $jpg['path'];
     }
 
-    if (count($errors) != 0) {
+    if ($errors) {
         $page_content = include_template('add-lot.php', ['added_data' => $added_data, 'jpg' => $jpg, 'errors' => $errors, 'cat' => $cat, 'list_menu' => $list_menu, 'picture_errors' => $picture_errors]);
     } else {
         $new_record = count_records($con, 'lot');
@@ -53,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $starting_price = $added_data['lot-rate'];
         $end_date = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $added_data['lot-date'])));
         $step = $added_data['lot-step'];
+
         $sql_add_lot = "INSERT INTO lot (id, user_id, category_id, creation_date, lot_name, description, photo, starting_price, step, end_date)
                         VALUES(" . $new_record . "," . $user['id'] . ",?,NOW(),?,?,?,?,?,?)";
         $stmt = mysqli_prepare($con, $sql_add_lot);
@@ -67,6 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$layout_content = include_template('layout.php', ['page_title' => 'Главная страница', 'auth_status' => $auth_status, 'content' => $page_content, 'list_menu' => $list_menu]);
+$layout_content = include_template('layout.php', ['page_title' => 'Добавление лота', 'auth_status' => $auth_status, 'content' => $page_content, 'list_menu' => $list_menu]);
 $layout_content = preg_replace('<main class="container">', 'main', $layout_content);
 print($layout_content);

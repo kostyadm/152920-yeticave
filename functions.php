@@ -50,7 +50,8 @@ function validate_email($email)
 }
 
 function validate_picture($photo_upload, $tmp_name)
-{   $jpg=[];
+{
+    $jpg = [];
     if (!empty($photo_upload)) {
         $path = uniqid() . '.jpg';
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -66,17 +67,22 @@ function validate_picture($photo_upload, $tmp_name)
     return $jpg;
 }
 
-function validate_lot_input($added_data, $required, $dict, $is_number)
+function validate_lot_input($added_data, $required, $dict)
 {
     $errors = [];
-    foreach ($added_data as $key => $value) {
-        if (in_array($key, $required) && ($value == '' OR $value == 'Выберите категорию')) {
-            $errors[$dict[$key]] = '- это поле необходимо заполнить';
+    foreach ($required as $value) {
+        if ($added_data[$value] == '' OR $added_data[$value] == 'Выберите категорию') {
+            $errors[$dict[$value]] = 'Это поле необходимо заполнить';
         }
-        if (in_array($key, $is_number)) {
-            if (!is_numeric($added_data[$key])) {
-                $errors[$dict[$key]] = '- в это поле необходимо вписать числовое значение';
-            }
+        if (($value == 'lot-rate' OR $value == 'lot-step')
+            AND ($added_data[$value] <= 0
+                OR !is_numeric($added_data[$value]))) {
+            $errors[$dict[$value]] = 'В это поле необходимо вписать числовое значение которое больше 0';
+        }
+        if ($value == 'lot-date'
+            AND (!strtotime($added_data[$value])
+                OR strtotime($added_data[$value]) < strtotime('now'))) {
+            $errors[$dict[$value]] = 'В это поле необходимо вписать корректную дату не раньше завтрашнего числа';
         }
     }
     return $errors;
@@ -114,6 +120,18 @@ function fetch_array($con, $sql)
     return $result;
 }
 
+function list_menu($con)
+{
+    $sql_cat = 'SELECT id, img_cat, category FROM categories ORDER BY id ASC';
+    $cat = fetch_data($con, $sql_cat);
+//create navigation panel list
+    $list_menu = '';
+    foreach ($cat as $value) {
+        $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
+    }
+    return $list_menu;
+}
+
 function add_data($con, $sql)
 {
     $result['ok'] = mysqli_query($con, $sql);
@@ -143,4 +161,41 @@ function get_id($item_name, $array)
         }
     }
     return $id;
+}
+
+function min_bet($id, $con, $lot_data)
+{
+    //selects max bet value for lot
+    $sql_max_bet = 'SELECT lot_id, MAX(bet_value) AS \'current_price\' FROM bet WHERE lot_id=' . $id . ' GROUP BY lot_id ORDER BY lot_id';
+    $max_bet = fetch_array($con, $sql_max_bet);
+
+//sets minimum for offers
+    $price = $lot_data['starting_price'];
+    $min_bet = $price + $lot_data['step'];
+    if ($max_bet['lot_id'] == $lot_data['id']) {
+        $price = $max_bet['current_price'];
+        $min_bet = $price + $lot_data['step'];
+    }
+
+    return $min_bet;
+}
+
+function insert_my_lots($con, $id)
+{
+    $sql_my_lots = 'SELECT l.id, l.photo, l.lot_name, l.starting_price, c.category,l.step, l.end_date, b.bet_value, b.reg_date
+                    FROM lot l
+                    JOIN categories c ON c.id=l.category_id
+                    JOIN bet b ON l.id=b.lot_id
+                    WHERE b.user_id=' . $id;
+    $my_lots = fetch_data($con, $sql_my_lots);
+
+    $added_lot = '';
+    foreach ($my_lots as $value) {
+        $lot_time_remaining = time_remaining($value['end_date']);
+        $lot_name = $value['lot_name'];
+        $lot_category = $value['category'];
+        $photo = $value['photo'];
+        $added_lot .= include_template('lot_list_added.php', ['lot_name' => $lot_name, 'cost' => $value['bet_value'], 'time_remaining' => $lot_time_remaining, 'timestamp' => strtotime($value['reg_date']), 'lot_category' => $lot_category, 'photo' => $photo, 'id' => $value['id']]);
+    }
+    return $added_lot;
 }

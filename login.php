@@ -5,17 +5,10 @@ require_once('init.php');
 
 session_start();
 
-$sql_cat = 'SELECT id, img_cat, category FROM categories ORDER BY id ASC';
-$cat = fetch_data($con, $sql_cat);
-
 $sql_user = 'SELECT id, email, password, avatar, user_name FROM users';
 $users = fetch_data($con, $sql_user);
 
-//create navigation panel list
-$list_menu = '';
-foreach ($cat as $key => $value){
-    $list_menu .= include_template('nav_list_category.php', ['category' => $value['category']]);
-}
+$list_menu = list_menu($con);
 
 if (isset($_SESSION['user'])) {
     header("Location:/index.php");
@@ -23,7 +16,9 @@ if (isset($_SESSION['user'])) {
 }
 // request method check
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $login_data = $_POST;
+    foreach ($_POST as $key => $value) {
+        $login_data[$key] = htmlspecialchars($value);
+    }
     $errors = validate_input_data($login_data);
 
     if (count($errors) == 0) {
