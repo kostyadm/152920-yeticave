@@ -20,8 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($_POST as $key => $value) {
         $added_data[$key] = htmlspecialchars($value);
     }
-    $required = ['lot_name', 'category', 'message','lot_photo', 'lot-rate', 'lot-step', 'lot-date'];
-    $dict = ['lot_name' => 'Наименование', 'category' => 'Категория', 'message' => 'Описание', 'Изображение'=>'lot_photo','lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки', 'lot-date' => 'Дата окончания торгов', 'email' => 'email', 'password' => 'Пароль'];
+    $required = ['lot_name', 'category', 'message','lot-rate', 'lot-step', 'lot-date'];
+    $dict = ['lot_name' => 'Наименование', 'category' => 'Категория', 'message' => 'Описание', 'lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки', 'lot-date' => 'Дата окончания торгов', 'email' => 'email', 'password' => 'Пароль'];
     $errors = validate_lot_input($added_data, $required, $dict);
 
     $jpg = [];

@@ -45,15 +45,13 @@
                 <img src="img/uploads/<?= $jpg['path']; ?>" width="113" height="113" alt="Изображение лота">
             </div>
         </div>
-        <div class="form__input-file <?= isset($errors['Изображение']) ? "form__item--invalid" : ""; ?>">
+        <div class="form__input-file">
             <input class="visually-hidden" type="file" id="photo2" value=""
                    name="lot_photo" required>
             <label for="photo2">
                 <span>+ Добавить</span>
             </label>
-            <span class="form__error"> <?= isset($errors['Изображение']) ? $errors['Изображение'] : ""; ?></span>
         </div>
-
     </div>
     <div class="form__container-three">
         <div class="form__item form__item--small <?= isset($errors['Начальная цена']) ? "form__item--invalid" : ""; ?>">
