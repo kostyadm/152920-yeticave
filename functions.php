@@ -70,8 +70,9 @@ function validate_picture($photo_upload, $tmp_name)
 function validate_lot_input($added_data, $required, $dict)
 {
     $errors = [];
+
     foreach ($required as $value) {
-        if ($added_data[$value] == '' OR $added_data[$value] == 'Выберите категорию') {
+        if (!isset($added_data[$value]) OR $added_data[$value] == '' OR $added_data[$value] == 'Выберите категорию') {
             $errors[$dict[$value]] = 'Это поле необходимо заполнить';
         }
         if (($value == 'lot-rate' OR $value == 'lot-step')
