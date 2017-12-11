@@ -50,7 +50,8 @@ function validate_email($email)
 }
 
 function validate_picture($photo_upload, $tmp_name)
-{   $jpg=[];
+{
+    $jpg = [];
     if (!empty($photo_upload)) {
         $path = uniqid() . '.jpg';
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -66,16 +67,21 @@ function validate_picture($photo_upload, $tmp_name)
     return $jpg;
 }
 
-function validate_lot_input($added_data, $required, $dict, $is_number)
+function validate_lot_input($added_data, $required, $dict, $number)
 {
     $errors = [];
     foreach ($added_data as $key => $value) {
         if (in_array($key, $required) && ($value == '' OR $value == 'Выберите категорию')) {
-            $errors[$dict[$key]] = '- это поле необходимо заполнить';
+            $errors[$dict[$key]] = 'Это поле необходимо заполнить';
         }
-        if (in_array($key, $is_number)) {
+        if ($key == 'lot-date'
+            AND (!strtotime($added_data['lot-date'])
+                OR strtotime($added_data['lot-date']) < strtotime('now'))) {
+            $errors[$dict[$key]] = 'В это поле необходимо вписать корректную дату';
+        }
+        if (in_array($key, $number)) {
             if (!is_numeric($added_data[$key])) {
-                $errors[$dict[$key]] = '- в это поле необходимо вписать числовое значение';
+                $errors[$dict[$key]] = 'В это поле необходимо вписать числовое значение';
             }
         }
     }
@@ -99,8 +105,8 @@ function validate_input_data($input_data)
 
 function fetch_data($con, $sql)
 {
-    $result1 = mysqli_query($con, $sql);
-    $result = mysqli_fetch_all($result1, MYSQLI_ASSOC);
+    $result = mysqli_query($con, $sql);
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     return $result;
 

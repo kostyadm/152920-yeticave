@@ -53,18 +53,17 @@ if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
     $auth_status = include_template('auth_user.php', ['user_name' => $user['user_name'], 'avatar' => $user['avatar']]);
 
-    //checks, if there are any bets
-    $in_cart = [];
-    if (isset ($_COOKIE['cart'])) {
-        $in_cart = json_decode($_COOKIE['cart'], TRUE);
-    }
+    //checks, if there are any bets made by user
+    $sql_users_bets='SELECT lot_id FROM bet WHERE user_id='.$user['id'];
+    $in_cart = fetch_data($con, $sql_users_bets);
+
     $lot_time_remaining = time_remaining($lot_data['end_date']);
     $do_offer = include_template('offer.php', ['price' => $price, 'min_bet' => $min_bet, 'id' => $lot_data['id']]);
     //checks, if there are any bets made by user for this item
     if (count($in_cart) > 0) {
         foreach ($in_cart as $value) {
             //compares items with bets
-            if ($id == $value) {
+            if ($id == $value['lot_id']) {
                 $do_offer = '';
                 break;
             } else {

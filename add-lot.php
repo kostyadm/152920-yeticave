@@ -24,10 +24,10 @@ if (isset($_SESSION['user'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $added_data = $_POST;
     /*эти массивы можно здесь оставить?*/
-    $required = ['lot-name', 'category', 'message', 'lot-rate', 'lot-step', 'lot-date'];
-    $dict = ['lot-name' => 'Наименование', 'category' => 'Категория', 'message' => 'Описание', 'lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки', 'lot-date' => 'Дата окончания торгов', 'email' => 'email', 'password' => 'Пароль'];
-    $is_number = ['lot-rate', 'lot-step'];
-    $errors = validate_lot_input($added_data, $required, $dict, $is_number);
+    $required = ['lot_name', 'category', 'message', 'lot-rate', 'lot-step', 'lot-date'];
+    $dict = ['lot_name' => 'Наименование', 'category' => 'Категория', 'message' => 'Описание', 'lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки', 'lot-date' => 'Дата окончания торгов', 'email' => 'email', 'password' => 'Пароль'];
+    $number = ['lot-rate', 'lot-step'];
+    $errors = validate_lot_input($added_data, $required, $dict, $number);
 
     $jpg = [];
     if (isset($_FILES["lot_photo"]['name'])) {
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $picture = $jpg['path'];
     }
 
-    if (count($errors) != 0) {
+    if ($errors) {
         $page_content = include_template('add-lot.php', ['added_data' => $added_data, 'jpg' => $jpg, 'errors' => $errors, 'cat' => $cat, 'list_menu' => $list_menu, 'picture_errors' => $picture_errors]);
     } else {
         $new_record = count_records($con, 'lot');
